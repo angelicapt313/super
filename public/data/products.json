@@ -1,0 +1,63 @@
+[
+    {
+      "id": 1,
+      "name": "Apple",
+      "price": 10,
+      "image": "apple.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Kiwi",
+      "price": 20,
+      "image": "kiwi.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Watermelon",
+      "price": 30,
+      "image": "watermelon.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Mango",
+      "price": 40,
+      "image": "mango.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Strawberry",
+      "price": 50,
+      "image": "strawberry.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Pineapple",
+      "price": 60,
+      "image": "pineapple.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Granade",
+      "price": 70,
+      "image": "granade.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Mandarin",
+      "price": 80,
+      "image": "mandarin.jpg"
+    },
+    {
+      "id": 9,
+      "name": "Peach",
+      "price": 90,
+      "image": "peaches.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Pear",
+      "price": 100,
+      "image": "pear.jpg"
+    }
+  ]
+  

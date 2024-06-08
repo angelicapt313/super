@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import home from '../assets/images/home.jpg'
 import '../styles/Home.css'
+import Products from './Products';
 
 const Home = () => {
     return (
@@ -11,9 +13,9 @@ const Home = () => {
 
             <div className="content-text flex flex-col items-center justify-center">
                 <h1 className=" title text-xl md:text-3xl text-center p-4">Your comfort, our priority: fast and reliable home delivery service.</h1>
-                {/* <Link to="/products"> */}
+                <Link to="/products">
                 <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Ver Productos</button>
-            {/* </Link> */}
+            </Link>
             </div>
 
 
