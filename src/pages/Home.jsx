@@ -1,29 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import home from '../assets/images/home.jpg'
+import file from '../assets/images/file.png'
 import '../styles/Home.css'
 import Products from './Products';
 
 const Home = () => {
     return (
-        <div className='mx-auto content grid grid-cols-1 md:grid-cols-2 auto-rows-fr'>
-            <div className='content-image'>
-                <img src={home} alt="Tienda" className=' w-full h-full sm:w-full' />
+        <div className="content">
+            <div className="flex flex-col items-center md:flex-row md:justify-between p-4 my-3">
+                <div className="md:w-1/2 p-4">
+                    <h1 className="title text-3xl font-bold mb-4">What you <span>want</span>, when you <span>need it </span>...</h1>
+                    <p className="subtitle text-gray-600 mb-4 text-lg">Because your <span>comfort </span>, our priority: <span>fast</span> and <span>reliable</span> home delivery service!</p>
+                    <Link to="/products">
+                        <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Ver Productos</button>
+                    </Link>
+                </div>
+                <div className="md:w-1/2 p-4">
+                    <img
+                        src={file}
+                        alt="Products Supermarket"
+                        className="w-full h-auto"
+                    />
+                </div>
             </div>
-
-            <div className="content-text flex flex-col items-center justify-center">
-                <h1 className=" title text-xl md:text-3xl text-center p-4">Your comfort, our priority: fast and reliable home delivery service.</h1>
-                <Link to="/products">
-                <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Ver Productos</button>
-            </Link>
-            </div>
-
-
         </div>
-
-
-        // <div class="bg-red-500 sm:bg-yellow-400 md:bg-green-400 lg:bg-purple-400 xl:bg-blue-400 py-2 px-4 text-center">Resize window</div>
-
 
     );
 };

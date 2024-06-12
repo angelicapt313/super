@@ -1,8 +1,19 @@
 .content{
     height: 100vh;
-    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .products{
     background-color: var(--dark-orange);
 }
+
+.title{
+    color: var(--dark-orange);
+}
+
+span{
+    font-weight: 650;
+}
+
