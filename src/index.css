@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Outfit:wght@100..900&display=swap');
+
+
 :root{
     --light: #fde3b2;
     --medium-orange: #fcae4c;
@@ -9,3 +12,7 @@
     --dark-orange: #dd4e3d;
 }
 
+
+body{
+    font-family: "Outfit", sans-serif;
+}
