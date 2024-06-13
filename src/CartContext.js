@@ -2,32 +2,27 @@ import React, { createContext, useState } from 'react';
 
 export const CartContext = createContext();
 
-export const ShopCartProvider = ({ children }) => {
+// Proveedor del contexto
+export const CartProvider = ({ children }) => {
 
-    const [shopCart, setShopCart] = useState([]);
+    const [cart, setCart] = useState([]);
 
     const addShopCart = (product) => {
-        setShopCart((prevShopCart) => {
-            const productExists = prevShopCart.find (item => item.id === product.id);
+        setCart((prevCart) => {
+            const productExists = prevCart.find(item => item.id === product.id);
 
-            if(productExists) {
-                return prevShopCart.map(item => item.id === product.id ? {...item, cantidad: item.cantidad + 1 } : item
+            if (productExists) {
+                return prevCart.map(item => item.id === product.id ? { ...item, cantidad: item.cantidad + 1 } : item
                 );
             }
-            return [...prevShopCart, {...product, cantidad: 1 }];
+            return [...prevCart, { ...product, cantidad: 1 }];
         });
-};
+    };
 
-const result = {
-    shopCart,
-    addShopCart,
-};
-
-
-return(
-    <CartContext.Provider value={result}>
-        {children}
-    </CartContext.Provider>
-);
+    return (
+        <CartContext.Provider value={{ cart , addShopCart }}>
+            {children}
+        </CartContext.Provider>
+    );
 
 };

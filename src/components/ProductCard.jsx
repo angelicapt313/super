@@ -6,6 +6,11 @@ const ProductCard = ({ product, addShopCart }) => {
 
     const imagePath = require(`../assets/images/${product.image}`);
 
+    const handleAddToCart = () => {
+        addShopCart(product);
+        setQuantity(quantity + 1);
+    };
+
     return (
         <div className="border p-4 rounded">
             <img src={imagePath} alt={product.name} className="w-full h-32 object-cover mb-2" />
@@ -15,7 +20,7 @@ const ProductCard = ({ product, addShopCart }) => {
             <div className="mt-2">
                 {quantity === 0 ? (
                     <button
-                        onClick={() => addShopCart(product)}
+                        onClick={ handleAddToCart}
                         className="bg-green-500 text-white px-2 py-1 rounded"
                     >
                         Agregar
