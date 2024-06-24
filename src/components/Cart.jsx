@@ -11,26 +11,48 @@ const Cart = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl mb-4">Shopping cart...</h1>
-            {cart.length === 0 ? (
-                <p>Your cart is currently empty.</p>
-            ) : (
-                <div className="grid grid-cols-1 gap-4">
-                    {cart.map(product => (
-                        <div key={product.id} className="flex items-center justify-between p-4 border rounded">
-                            <img src={require(`../assets/images/${product.image}`)} alt={product.name} className="w-16 h-16 object-cover" />
-                            <div className="flex-1 ml-4">
-                                <h2 className="text-lg">{product.name}</h2>
-                                <p className="text-gray-600">${product.price}</p>
-                            </div>
-                            <div className="flex items-center">
-                                <span className="text-lg">{product.cantidad}</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+            <div className="overflow-x-auto">
+                <table className="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th className="w-1/12"></th>
+                            <th className="w-3/12 px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">Product</th>
+                            <th className="w-2/12 px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">Price</th>
+                            <th className="w-2/12 px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">QTY</th>
+                            <th className="w-2/12 px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs leading-4 text-gray-600 uppercase tracking-wider">Total</th>
+                            <th className="w-1/12"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {cart.map(product => (
+                            <tr key={product.id}>
+                                <td className="w-1/12"></td>
+                                <td className="w-3/12 px-6 py-4 border-b border-gray-300 text-sm">
+                                    <div className="flex items-center">
+                                        <img src={require(`../assets/images/${product.image}`)} alt={product.name} className="w-16 h-16 object-cover" />
+                                        <div className="ml-4">
+                                            <p className="text-gray-900 whitespace-no-wrap">{product.name}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">${product.price}</p>
+                                </td>
+                                <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">{product.cantidad}</p>
+                                </td>
+                                <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">${(product.price * product.cantidad).toFixed(2)}</p>
+                                </td>
+                                <td className="w-1/12"></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
+
 };
 
 export default Cart;
