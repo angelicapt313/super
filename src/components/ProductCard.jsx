@@ -1,14 +1,37 @@
 // src/components/ProductCard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { CartContext } from '../CartContext';
 
-const ProductCard = ({ product, addShopCart }) => {
+const ProductCard = ({ product }) => {
+    const { addShopCart, cart } = useContext(CartContext);
     const [quantity, setQuantity] = useState(0);
+
+    useEffect(() => {
+        const existingProduct = cart.find(item => item.id === product.id);
+        if (existingProduct) {
+            setQuantity(existingProduct.cantidad);
+        }
+    }, [cart, product.id]);
 
     const imagePath = require(`../assets/images/${product.image}`);
 
     const handleAddToCart = () => {
-        addShopCart(product);
-        setQuantity(quantity + 1);
+        const newQuantity = quantity + 1;
+        setQuantity(newQuantity);
+        addShopCart({...product, cantidad: newQuantity});
+    };
+
+    const handleIncreaseQuantity = () => {
+        const newQuantity = quantity + 1;
+        setQuantity(newQuantity);
+        addShopCart({ ...product, cantidad: newQuantity });
+    };
+
+    const handleDecreaseQuantity = () => {
+        const newQuantity = quantity - 1;
+        if(newQuantity >= 0)
+        setQuantity(newQuantity);
+        addShopCart({ ...product, cantidad: newQuantity });
     };
 
     return (
@@ -28,13 +51,13 @@ const ProductCard = ({ product, addShopCart }) => {
                 ) : (
                     <div>
                         <button
-                            onClick={() => setQuantity(quantity + 1)}
+                            onClick={handleIncreaseQuantity}
                             className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
                         >
                             +
                         </button>
                         <button
-                            onClick={() => setQuantity(quantity - 1)}
+                            onClick={handleDecreaseQuantity}
                             className="bg-red-500 text-white px-2 py-1 rounded"
                         >
                             -

@@ -9,9 +9,9 @@ const Header = () => {
 
     const { cart } = useContext(CartContext);
 
-    if (!cart) {
-        return null; // Añadir esta línea para manejar el caso donde el carrito aún no está definido
-    }
+    // if (!cart) {
+    //     return null; // Añadir esta línea para manejar el caso donde el carrito aún no está definido
+    // }
 
     const totalProductos = cart.reduce((acc, item) => acc + item.cantidad, 0);
 
