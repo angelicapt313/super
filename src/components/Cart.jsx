@@ -4,6 +4,8 @@ import { CartContext } from '../CartContext';
 const Cart = () => {
     const { cart, removeFromCart } = useContext(CartContext);
 
+    const totalGeneral = cart.reduce((acc, product) => acc + product.price * product.cantidad, 0);
+
     if (!cart || cart.length === 0) {
         return <p>No hay productos en el carrito.</p>;
     }
@@ -44,10 +46,18 @@ const Cart = () => {
                                 <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
                                     <p className="text-gray-900 whitespace-no-wrap">${(product.price * product.cantidad).toFixed(2)}</p>
                                 </td>
-                                <td className="w-1/12 w-2/12 px-6 py-4 border-b border-gray-300"><button className='px-2 py-2 bg-red-500/100 rounded-lg'onClick={() => removeFromCart(product.id)} >X</button></td>
+                                <td className="w-1/12 w-2/12 px-6 py-4 border-b border-gray-300"><button className='px-2 py-2 bg-red-500/100 rounded-lg' onClick={() => removeFromCart(product.id)} >X</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan="4" className="px-6 py-4 text-right font-bold">Total General</td>
+                            <td className="px-6 py-4 border-t border-gray-300 text-lg font-bold">${totalGeneral.toFixed(2)}</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
