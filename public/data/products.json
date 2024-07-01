@@ -2,61 +2,61 @@
     {
       "id": 1,
       "name": "Apple",
-      "price": 10,
+      "price": 1.50,
       "image": "apple.jpg"
     },
     {
       "id": 2,
       "name": "Kiwi",
-      "price": 20,
+      "price": 1.90,
       "image": "kiwi.jpg"
     },
     {
       "id": 3,
       "name": "Watermelon",
-      "price": 30,
+      "price": 1.40,
       "image": "watermelon.jpg"
     },
     {
       "id": 4,
       "name": "Mango",
-      "price": 40,
+      "price": 1.70,
       "image": "mango.jpg"
     },
     {
       "id": 5,
       "name": "Strawberry",
-      "price": 50,
+      "price": 2.80,
       "image": "strawberry.jpg"
     },
     {
       "id": 6,
       "name": "Pineapple",
-      "price": 60,
+      "price": 2.50,
       "image": "pineapple.jpg"
     },
     {
       "id": 7,
       "name": "Granade",
-      "price": 70,
+      "price": 2.90,
       "image": "granade.jpg"
     },
     {
       "id": 8,
       "name": "Mandarin",
-      "price": 80,
+      "price": 1.80,
       "image": "mandarin.jpg"
     },
     {
       "id": 9,
       "name": "Peach",
-      "price": 90,
+      "price": 2.10,
       "image": "peaches.jpg"
     },
     {
       "id": 10,
       "name": "Pear",
-      "price": 100,
+      "price": 1.60,
       "image": "pear.jpg"
     }
   ]
