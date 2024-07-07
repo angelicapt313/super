@@ -11,7 +11,7 @@ const LoginButton = () => {
         });
     };
 
-    return <button onClick={handleLogin}>Login</button>;
+    return <button className='rounded-full p-2' style={{backgroundColor:"#fde3b2", width:"90px"}} onClick={handleLogin}>Login</button>;
 };
 
 export default LoginButton;
