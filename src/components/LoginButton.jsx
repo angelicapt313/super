@@ -13,7 +13,7 @@ const LoginButton = () => {
     };
 
     return <button className='rounded-full p-1' style={{ backgroundColor: "#fde3b2", width: "65px" }} onClick={handleLogin}>
-        <img src={iconUser} className='w-8 mx-auto' />
+        <img src={iconUser} className='w-8 mx-auto' alt='Icon User' />
     </button>;
 };
 
