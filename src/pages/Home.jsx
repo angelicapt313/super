@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import file from '../assets/images/file.png'
 import '../styles/Home.css'
-import Products from './Products';
-import iconUser from '../assets/images/iconUser.png';
 
 const Home = () => {
     return (
