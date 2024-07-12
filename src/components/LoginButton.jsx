@@ -7,7 +7,11 @@ const LoginButton = () => {
     const { instance } = useMsal();
 
     const handleLogin = () => {
-        instance.loginPopup(loginRequest).catch(e => {
+        instance.loginPopup(loginRequest)
+        .then(r => {
+            localStorage.setItem("AccessToken", r.accessToken)
+        })
+        .catch(e => {
             console.error(e);
         });
     };

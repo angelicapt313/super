@@ -4,7 +4,8 @@ const baseURL = 'https://quickstore.azurewebsites.net/api/GetProducts'; // Repla
 
 const fetchWithAuth = async (url, options = {}) => {
   
-  const token = '';
+  const token = localStorage.getItem("AccessToken");
+  
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
