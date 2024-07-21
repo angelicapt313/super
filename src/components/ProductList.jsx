@@ -9,9 +9,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getData();
-        debugger
-        setData(result);
+        
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -22,11 +20,12 @@ const ProductList = () => {
 
   const handlePostData = async () => {
     try {
-        debugger
+        
       const newData = { "id": "fc6ac2d8-43d4-4dbe-823c-3f768686be84"};
       const result = await postData(newData);
-      debugger
-      console.log('Data posted successfully:', result);
+      
+     
+      setData(result);
     } catch (error) {
       console.error('Error posting data', error);
     }

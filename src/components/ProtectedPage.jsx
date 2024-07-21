@@ -12,12 +12,12 @@ const ProtectedPage = () => {
                 ...loginRequest,
                 account: accounts[0]
             }).then(response => {
-                debugger
+                
                 localStorage.setItem("token", response.accessToken);
                 setToken(response.accessToken);
                 
             }).catch(err => {
-                debugger
+                
                 console.error(err);
                 instance.acquireTokenPopup(loginRequest).then(response => {
                     localStorage.setItem("token", response.accessToken);

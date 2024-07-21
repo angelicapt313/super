@@ -1,8 +1,8 @@
 export const msalConfig = {
     auth: {
-        clientId: "01433f18-87f9-44a2-8772-ca2fc9316a40",
+        clientId: "3b69122c-b10b-4af3-b8ad-5bdf35144df9",
         authority: "https://login.microsoftonline.com/27d76b99-0ce0-463e-b4b5-d9cc9e9910a8",
-        redirectUri: "https://gray-moss-0a2bb0a0f.5.azurestaticapps.net"
+        redirectUri: "http://localhost:3000"
     },
     cache: {
         cacheLocation: "localStorage",
@@ -11,5 +11,5 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-    scopes: ["User.Read"]
+    scopes: ["3b69122c-b10b-4af3-b8ad-5bdf35144df9/user_impersonation"]
 };

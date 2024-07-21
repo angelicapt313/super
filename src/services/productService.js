@@ -1,4 +1,3 @@
-// src/services/fetchUtils.js
 
 const baseURL = 'https://quickstorefunctions.azurewebsites.net/api/GetProductById?';
 const getUrl = 'https://quickstorefunctions.azurewebsites.net/api/GetProducts';
