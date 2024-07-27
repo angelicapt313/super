@@ -34,11 +34,15 @@ const ProductCard = ({product}) => {
     };
     debugger
     return (
-        
+      
         <div className="border p-4 rounded">    
        
-            <h2 className="text-lg font-bold">{product.ProductName}</h2>
-            <p className="text-gray-700">${product.ProductID}</p>
+            <h2 className="text-lg font-bold">{product.ProductID}</h2>
+            <p className="text-gray-700">${product.ProductName}</p>
+            <p className="text-gray-700">${product.ProductQuantity}</p>
+            <p className="text-gray-700">${product.ProductPrice}</p>
+            <p className="text-gray-700">${product.ProductDiscount}</p>
+            <p className="text-gray-700">${product.ProductImageName}</p>
             
             <div className="mt-2">
                 {quantity === 0 ? (
