@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { CartContext } from '../CartContext';
 
-const ProductCard = ({ product }) => {
-    const { addShopCart, cart } = useContext(CartContext);
-    const [quantity, setQuantity] = useState(0);
+const ProductCard = ({product}) => {
+    
+     const { addShopCart, cart } = useContext(CartContext);
+     const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
-        const existingProduct = cart.find(item => item.id === product.id);
-        if (existingProduct) {
-            setQuantity(existingProduct.cantidad);
-        }
-    }, [cart, product.id]);
-
-    const imagePath = require(`../assets/images/${product.image}`);
+        
+        // const existingProduct = cart.find(item => item.ProductID === product.ProductID);
+        // if (existingProduct) {
+        //     setQuantity(existingProduct.cantidad);
+        // }
+    }, [cart, product.ProductID]);
 
     const handleAddToCart = () => {
         const newQuantity = quantity + 1;
@@ -32,12 +32,13 @@ const ProductCard = ({ product }) => {
         setQuantity(newQuantity);
         addShopCart({ ...product, cantidad: newQuantity });
     };
-
+    debugger
     return (
-        <div className="border p-4 rounded">
-            <img src={imagePath} alt={product.name} className="w-full h-32 object-cover mb-2" />
-            <h2 className="text-lg font-bold">{product.name}</h2>
-            <p className="text-gray-700">${product.price}</p>
+        
+        <div className="border p-4 rounded">    
+       
+            <h2 className="text-lg font-bold">{product.ProductName}</h2>
+            <p className="text-gray-700">${product.ProductID}</p>
             
             <div className="mt-2">
                 {quantity === 0 ? (
@@ -68,5 +69,6 @@ const ProductCard = ({ product }) => {
         </div>
     );
 };
+
 
 export default ProductCard;
