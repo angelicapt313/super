@@ -4,19 +4,19 @@ export const CartContext = createContext();
 
 // Proveedor del contexto
 export const CartProvider = ({ children }) => {
-
+    debugger
     const [cart, setCart] = useState([]);
 
     const addShopCart = (product) => {
         setCart((prevCart) => {
-            const productExists = prevCart.find(item => item.id === product.id);
+            const productExists = prevCart.find(item => item.ProductID === product.ProductID);
 
             if (productExists) {
                 if (product.cantidad > 0) {
-                    return prevCart.map(item => item.id === product.id ? { ...item, cantidad: product.cantidad } : item
+                    return prevCart.map(item => item.ProductID === product.ProductID ? { ...item, cantidad: product.ProductQuantity } : item
                     );
                 } else {
-                    return prevCart.filter(item => item.id !== product.id);
+                    return prevCart.filter(item => item.ProductID !== product.ProductID);
                 }
 
             }
@@ -25,7 +25,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeFromCart = (productId) => {
-        setCart((prevCart) => prevCart.filter(item => item.id !== productId));
+        setCart((prevCart) => prevCart.filter(item => item.ProductID !== productId));
     }
 
     return (

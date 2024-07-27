@@ -4,45 +4,48 @@ import { CartContext } from '../CartContext';
 const ProductCard = ({product}) => {
     
      const { addShopCart, cart } = useContext(CartContext);
+
      const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
         
-        // const existingProduct = cart.find(item => item.ProductID === product.ProductID);
-        // if (existingProduct) {
-        //     setQuantity(existingProduct.cantidad);
-        // }
+        const existingProduct = cart.find(item => item.ProductID === product.ProductID);
+        if (existingProduct) {
+            setQuantity(existingProduct.quantity);
+        }
     }, [cart, product.ProductID]);
 
     const handleAddToCart = () => {
+        
         const newQuantity = quantity + 1;
         setQuantity(newQuantity);
         addShopCart({...product, cantidad: newQuantity});
     };
 
     const handleIncreaseQuantity = () => {
+        
         const newQuantity = quantity + 1;
         setQuantity(newQuantity);
         addShopCart({ ...product, cantidad: newQuantity });
     };
 
     const handleDecreaseQuantity = () => {
+        
         const newQuantity = quantity - 1;
         if(newQuantity >= 0)
         setQuantity(newQuantity);
         addShopCart({ ...product, cantidad: newQuantity });
     };
-    debugger
+    
     return (
       
         <div className="border p-4 rounded">    
        
-            <h2 className="text-lg font-bold">{product.ProductID}</h2>
-            <p className="text-gray-700">${product.ProductName}</p>
-            <p className="text-gray-700">${product.ProductQuantity}</p>
-            <p className="text-gray-700">${product.ProductPrice}</p>
-            <p className="text-gray-700">${product.ProductDiscount}</p>
-            <p className="text-gray-700">${product.ProductImageName}</p>
+            <h2 className="text-lg font-bold">{product.ProductName}</h2>
+            <p className="text-gray-700">Cantidad: {product.ProductQuantity}</p>
+            <p className="text-gray-700">Precio: ${product.ProductPrice}</p>
+            <p className="text-gray-700">Descuento: %{product.ProductDiscount}</p>
+            <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
             
             <div className="mt-2">
                 {quantity === 0 ? (
