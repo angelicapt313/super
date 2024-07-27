@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import file from '../assets/images/file.png'
 import '../styles/Home.css'
 
-import ProductList from '../components/ProductList';
+import DashBoardUser from './DashboardUser';
 
 const Home = () => {
     return (
@@ -17,6 +17,9 @@ const Home = () => {
                     <Link to="/products">
                         <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Ver Productos</button>
                     </Link>
+                    <Link to="/dashboarduser">
+                        <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">DashBoard</button>
+                    </Link>
                 </div>
 
                 <div className="image-content">
@@ -29,7 +32,7 @@ const Home = () => {
 
             </div>
 
-           
+        
         </div>
 
     );

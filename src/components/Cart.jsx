@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { CartContext } from '../CartContext';
 
 const Cart = () => {
-    debugger
+    
     const { cart, removeFromCart } = useContext(CartContext);
 
     const totalGeneral = cart.reduce((acc, product) => acc + product.ProductPrice * product.ProductQuantity, 0);
