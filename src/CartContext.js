@@ -12,8 +12,8 @@ export const CartProvider = ({ children }) => {
             const productExists = prevCart.find(item => item.ProductID === product.ProductID);
 
             if (productExists) {
-                if (product.cantidad > 0) {
-                    return prevCart.map(item => item.ProductID === product.ProductID ? { ...item, cantidad: product.ProductQuantity } : item
+                if (product.quantityAdded > 0) {
+                    return prevCart.map(item => item.ProductID === product.ProductID ? { ...item, quantityAdded: product.quantityAdded } : item
                     );
                 } else {
                     return prevCart.filter(item => item.ProductID !== product.ProductID);

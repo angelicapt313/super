@@ -5,10 +5,10 @@ const Cart = () => {
     debugger
     const { cart, removeFromCart } = useContext(CartContext);
 
-    const totalGeneral = cart.reduce((acc, product) => acc + product.ProductPrice * product.ProductQuantity, 0);
+    const grandTotal = cart.reduce((acc, product) => acc + product.ProductPrice * product.quantityAdded, 0);
 
     if (!cart || cart.length === 0) {
-        return <p>No hay productos en el carrito.</p>;
+        return <p className='font-bold m-4 text-center'>There are no products in the cart.</p>;
     }
 
     return (
@@ -42,10 +42,10 @@ const Cart = () => {
                                     <p className="text-gray-900 whitespace-no-wrap">${product.ProductPrice}</p>
                                 </td>
                                 <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
-                                    <p className="text-gray-900 whitespace-no-wrap">{product.ProductQuantity}</p>
+                                    <p className="text-gray-900 whitespace-no-wrap">{product.quantityAdded}</p>
                                 </td>
                                 <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
-                                    <p className="text-gray-900 whitespace-no-wrap">${(product.ProductPrice * product.ProductQuantity).toFixed(2)}</p>
+                                    <p className="text-gray-900 whitespace-no-wrap">${(product.ProductPrice * product.quantityAdded).toFixed(2)}</p>
                                 </td>
                                 <td className="w-1/12 w-2/12 px-6 py-4 border-b border-gray-300"><button className='px-2 py-2 bg-red-500/100 rounded-lg' onClick={() => removeFromCart(product.ProductID)} >X</button>
                                 </td>
@@ -54,8 +54,8 @@ const Cart = () => {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colSpan="4" className="px-6 py-4 text-right font-bold">Total General</td>
-                            <td className="px-6 py-4 border-t border-gray-300 text-lg font-bold">${totalGeneral.toFixed(2)}</td>
+                            <td colSpan="4" className="px-6 py-4 text-right font-bold">Total</td>
+                            <td className="px-6 py-4 border-t border-gray-300 text-lg font-bold">${grandTotal.toFixed(2)}</td>
                             <td></td>
                         </tr>
                     </tfoot>

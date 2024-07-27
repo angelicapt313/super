@@ -5,36 +5,36 @@ const ProductCard = ({product}) => {
     
      const { addShopCart, cart } = useContext(CartContext);
 
-     const [quantity, setQuantity] = useState(0);
+     const [quantityAdded, setQuantityAdded] = useState(0);
 
     useEffect(() => {
         
         const existingProduct = cart.find(item => item.ProductID === product.ProductID);
         if (existingProduct) {
-            setQuantity(existingProduct.quantity);
+            setQuantityAdded(existingProduct.quantityAdded);
         }
     }, [cart, product.ProductID]);
 
     const handleAddToCart = () => {
         
-        const newQuantity = quantity + 1;
-        setQuantity(newQuantity);
-        addShopCart({...product, cantidad: newQuantity});
+        const newQuantity = quantityAdded + 1;
+        setQuantityAdded(newQuantity);
+        addShopCart({...product, quantityAdded: newQuantity});
     };
 
     const handleIncreaseQuantity = () => {
         
-        const newQuantity = quantity + 1;
-        setQuantity(newQuantity);
-        addShopCart({ ...product, cantidad: newQuantity });
+        const newQuantity = quantityAdded + 1;
+        setQuantityAdded(newQuantity);
+        addShopCart({ ...product, quantityAdded: newQuantity });
     };
 
     const handleDecreaseQuantity = () => {
         
-        const newQuantity = quantity - 1;
+        const newQuantity = quantityAdded - 1;
         if(newQuantity >= 0)
-        setQuantity(newQuantity);
-        addShopCart({ ...product, cantidad: newQuantity });
+            setQuantityAdded(newQuantity);
+        addShopCart({ ...product, quantityAdded: newQuantity });
     };
     
     return (
@@ -48,12 +48,12 @@ const ProductCard = ({product}) => {
             <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
             
             <div className="mt-2">
-                {quantity === 0 ? (
+                {quantityAdded === 0 ? (
                     <button
                         onClick={ handleAddToCart}
                         className="bg-green-500 text-white px-2 py-1 rounded"
                     >
-                        Agregar
+                        Add
                     </button>
                 ) : (
                     <div>
@@ -69,7 +69,7 @@ const ProductCard = ({product}) => {
                         >
                             -
                         </button>
-                        <span className="ml-2">{quantity}</span>
+                        <span className="ml-2">{quantityAdded}</span>
                     </div>
                 )}
             </div>
