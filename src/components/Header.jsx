@@ -6,14 +6,14 @@ import imgCart from '../assets/images/imgCart.svg';
 import LoginButton from '../components/LoginButton';
 
 const Header = () => {
-    debugger
+
     const { cart } = useContext(CartContext);
 
     // if (!cart) {
     //     return null; // Añadir esta línea para manejar el caso donde el carrito aún no está definido
     // }
 
-    const totalProductos = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const productsAddedCart = cart.reduce((acc, item) => acc + item.quantityAdded, 0);
 
     return (
         <header className="navbar p-4 text-white">
@@ -28,9 +28,9 @@ const Header = () => {
 
                     <Link to="/cart">
                         <img src={imgCart} alt="Carrito de compras" className="w-10 h-10 relative" />
-                        {totalProductos > 0 && (
+                        {productsAddedCart > 0 && (
                             <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center">
-                                {totalProductos}
+                                {productsAddedCart}
                             </span>
                         )}
                     </Link>
