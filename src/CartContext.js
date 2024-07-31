@@ -4,7 +4,7 @@ export const CartContext = createContext();
 
 // Proveedor del contexto
 export const CartProvider = ({ children }) => {
-    debugger
+    
     const [cart, setCart] = useState([]);
 
     const addShopCart = (product) => {

@@ -7,6 +7,10 @@ import Cart from './components/Cart';
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
 import { loginRequest } from './authConfig';
 import ProtectedPage from './components/ProtectedPage';
+import DashboardUser from './pages/DashboardUser';
+import Reports from './pages/Reports';
+import Upload from './pages/Upload';
+import Inventory from './pages/Inventory';
 
 function App() {
   return (
@@ -16,6 +20,11 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/products' element={<Products />} />
+          <Route path='/dashboarduser' element={<DashboardUser />} />
+          <Route path='/reports' element={<Reports />} />
+          <Route path='/upload' element={<Upload />} />
+          <Route path='/inventory' element={<Inventory />} />
+          <Route path='/dashboarduser' element={<DashboardUser />} />
           <Route path='/cart' element={<Cart />} />
           <Route 
             path="/protected" 

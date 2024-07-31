@@ -6,7 +6,7 @@ import imgCart from '../assets/images/imgCart.svg';
 import LoginButton from '../components/LoginButton';
 
 const Header = () => {
-
+    
     const { cart } = useContext(CartContext);
 
     // if (!cart) {
