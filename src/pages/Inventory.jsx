@@ -1,10 +1,22 @@
 import DashboardSideMenu from "./DashboardSideMenu";
 import { React, useState, useEffect } from "react";
 import { getData, postData } from '../components/ApiCalls';
+import { ProductApis } from "../authConfig";
+
+export class Product {
+    ProductID = "";
+    ProductName = "";
+    ProductDescription = "";
+    ProductPrice = "";
+    ProductDiscount = "";
+    ProductImageName = "";
+    isDeleted = "";
+    UpdatedAt = "";
+        
+}
 
 const Inventory = () => {
    
-    const [activeView, setActiveView] = useState('');
     const [products, setProducts] = useState([]);
     const [form, setForm] = useState({ id: null, name: '', price: '' });
     const [editing, setEditing] = useState(false);
@@ -15,52 +27,50 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await getData();
-            
+            const response = await getData(ProductApis.GetProducts);
+
             setProducts(response);
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+    const handleInputChange = async (e) => {
+        
+        const { value } = e.target;
+        setForm(value);
     };
 
     const handleSubmit = async (e) => {
+        debugger
         e.preventDefault();
         if (editing) {
-            await updateProduct();
+
+            await updateProduct(e.target);
         } else {
             await addProduct();
         }
         setForm({ id: null, name: '', price: '' });
     };
 
-    const addProduct = async () => {
+    const addProduct = async (data) => {
         try {
-            const response = await postData( {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
-            });
-            const newProduct = await response.json();
-            setProducts([...products, newProduct]);
+            
+            const response = await postData(data);
+            setProducts([...products, response]);
+
         } catch (error) {
             console.error('Error adding product:', error);
         }
     };
 
-    const updateProduct = async () => {
+    const updateProduct = async (target) => {
         try {
-            const response = await getData(`${form.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
-            });
-            const updatedProduct = await response.json();
-            setProducts(products.map((product) => (product.ProductID === form.id ? updatedProduct : product)));
+            debugger
+
+           var product = new Product(target);
+           const response = await postData(ProductApis.UpdateProduct, product);
+           setForm(...target, response)
             setEditing(false);
         } catch (error) {
             console.error('Error updating product:', error);
@@ -68,14 +78,16 @@ const Inventory = () => {
     };
 
     const handleEdit = (product) => {
+        debugger
         setForm(product);
         setEditing(true);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (product) => {
         try {
-            await fetch(`${id}`, { method: 'DELETE' });
-            setProducts(products.filter((product) => product.id !== id));
+            
+            const response = await postData(ProductApis.DeleteProduct, product);
+            setProducts(response);
         } catch (error) {
             console.error('Error deleting product:', error);
         }
@@ -97,7 +109,7 @@ const Inventory = () => {
                             <input
                                 type="text"
                                 name="name"
-                                value={form.name}
+                                value={form.ProductName}
                                 onChange={handleInputChange}
                                 placeholder="Product Name"
                                 className="p-2 border rounded"
@@ -106,9 +118,45 @@ const Inventory = () => {
                             <input
                                 type="number"
                                 name="price"
-                                value={form.price}
+                                value={form.ProductPrice}
                                 onChange={handleInputChange}
                                 placeholder="Product Price"
+                                className="p-2 border rounded"
+                                required
+                            />
+                            <input
+                                type="text"
+                                name="description"
+                                value={form.ProductDescription}
+                                onChange={handleInputChange}
+                                placeholder="Product Description"
+                                className="p-2 border rounded"
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="discount"
+                                value={form.ProductDiscount}
+                                onChange={handleInputChange}
+                                placeholder="Product Discount"
+                                className="p-2 border rounded"
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="quantity"
+                                value={form.ProductQuantity}
+                                onChange={handleInputChange}
+                                placeholder="Product Quantity"
+                                className="p-2 border rounded"
+                                required
+                            />
+                            <input
+                                type="text"
+                                name="imageName"
+                                value={form.ProductImageName}
+                                onChange={handleInputChange}
+                                placeholder="Product Image Name"
                                 className="p-2 border rounded"
                                 required
                             />

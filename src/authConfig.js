@@ -13,3 +13,10 @@ export const msalConfig = {
 export const loginRequest = {
     scopes: ["3b69122c-b10b-4af3-b8ad-5bdf35144df9/user_impersonation"]
 };
+
+export const ProductApis = {
+    GetProducts: 'https://quickstorefunctions.azurewebsites.net/api/GetProducts',
+    GetProductByID: 'https://quickstorefunctions.azurewebsites.net/api/GetProductById',
+    UpdateProduct: 'https://quickstorefunctions.azurewebsites.net/api/UpdateProduct',
+    DeleteProduct: 'https://quickstorefunctions.azurewebsites.net/api/DeleteProduct'
+}

@@ -1,6 +1,7 @@
 import { getData } from "../components/ApiCalls";
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
+import { ProductApis } from "../authConfig";
 
 
 const Products = () => {
@@ -12,7 +13,11 @@ const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let p = await getData();
+
+        let p = await getData(ProductApis.GetProducts);
+
+       
+
         setProductos(p);
 
 
