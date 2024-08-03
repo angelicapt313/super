@@ -6,8 +6,6 @@ import reports from './Reports'; // Update the path to your actual icon
 
 const DashboardSideMenu = () => {
 
-    const [setActiveView] = useState('');
-
     return (
         <div className="w-64 bg-gray-800 text-white flex flex-col p-4">
         <Link to="/dashboarduser">
