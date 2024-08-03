@@ -21,7 +21,6 @@ const DashboardSideMenu = () => {
             <Link 
                 to="/inventory" 
                 className="flex items-center space-x-3"
-                onClick={() => setActiveView('inventory')}
             >
                 <img src={inventory} alt="Inventario" className="w-7 h-7" />
                 <span>Inventory</span>
