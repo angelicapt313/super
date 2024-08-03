@@ -15,7 +15,7 @@ const DashboardSideMenu = () => {
         </Link>
         <div className="flex flex-col space-y-4">
             <Link to="/upload" className="flex items-center space-x-3">
-                <img src={upload} alt="Subir Productos" className="w-6 h-6" />
+                <img src="../assets/images/upload.svg" alt="Subir Productos" className="w-6 h-6" />
                 <span>Upload Products</span>
             </Link>
             <Link 
