@@ -1,9 +1,7 @@
 import DashboardSideMenu from "./DashboardSideMenu";
-import {React, useState} from "react";
+import {React} from "react";
 
 const Upload = () => {
-
-    const [activeView, setActiveView] = useState('');
 
     return (
         <div className="flex min-h-screen">

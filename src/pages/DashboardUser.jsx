@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DashboardSideMenu from './DashboardSideMenu';
 import Charts from './Charts';
 

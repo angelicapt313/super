@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import file from '../assets/images/file.png'
 import '../styles/Home.css'
 
-import DashBoardUser from './DashboardUser';
-
 const Home = () => {
     return (
         <div className="content h-screen flex justify-center items-center">

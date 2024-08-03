@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DashboardSideMenu from './DashboardSideMenu';
 const Reports = () => {
-    const [activeView, setActiveView] = useState('');
     
 
     return (
