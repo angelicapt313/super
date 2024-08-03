@@ -41,7 +41,6 @@ const Inventory = () => {
             <DashboardSideMenu></DashboardSideMenu>
             
             {/* Main Content */}
-
             <div className="flex-1 p-6">
             
              <EditableTable products={products} setProducts={setProducts} />
