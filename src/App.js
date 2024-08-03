@@ -23,7 +23,7 @@ function App() {
           <Route path='/dashboarduser' element={<DashboardUser />} />
           <Route path='/reports' element={<Reports />} />
           <Route path='/upload' element={<Upload />} />
-          <Route path='/inventory' element={<Inventory />} />
+          <Route path='/pages/inventory' element={<Inventory />} />
           <Route path='/dashboarduser' element={<DashboardUser />} />
           <Route path='/cart' element={<Cart />} />
           <Route 
