@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { CartContext } from '../CartContext';
+import '../styles/ProductCard.css';
 
 const ProductCard = ({ product }) => {
 
@@ -39,43 +40,61 @@ const ProductCard = ({ product }) => {
 
     return (
 
-            <div className="border p-4 rounded m-2">
+        <div className="card-neo flex flex-col md:flex-row border  rounded m-2">
 
-                <h2 className="text-lg font-bold">{product.ProductName}</h2>
-                <p className="text-gray-700">Cantidad: {product.ProductQuantity}</p>
-                <p className="text-gray-700">Precio: ${product.ProductPrice}</p>
-                <p className="text-gray-700">Descuento: %{product.ProductDiscount}</p>
-                <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
+            <div className="md:w-1/2 ">
+                <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-full h-full object-cover object-center rounded" />
+            </div>
 
-                <div className="mt-2">
+            <div className="flex flex-col justify-between m-1 p-2 md:w-1/2">
+                <div>
+                    <p className="text-lg font-bold">{product.ProductName}</p>
+                    <p className="text-gray-700">Cantidad: {product.ProductQuantity}</p>
+                    {product.ProductDiscount > 0 && (
+
+                    <p className="text-gray-700">Descuento: %{product.ProductDiscount}</p>
+                    )}
+                </div>
+
+
+                {/* Agregar */}
+                <div className="flex items-center justify-between my-1 border-t-4">
+
+                    <p className=" text-gray-700 font-bold">${product.ProductPrice}</p>
+
                     {quantityAdded === 0 ? (
+
                         <button
                             onClick={handleAddToCart}
-                            className="bg-green-500 text-white px-2 py-1 rounded"
+                            className="btn-add bg-green-500 text-white m-1 px-3 rounded"
                         >
-                            Add
+                            +
                         </button>
+
                     ) : (
-                        <div>
+                        <div className="btn-add flex items-center ">
                             <button
                                 onClick={handleIncreaseQuantity}
-                                className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
+                                className="bg-green-400 text-white m-1 px-2  rounded "
                             >
                                 +
                             </button>
+                            <span className="text-sm">{quantityAdded}</span>
                             <button
                                 onClick={handleDecreaseQuantity}
-                                className="bg-red-500 text-white px-2 py-1 rounded"
+                                className="btn-sub bg-red-400 text-white m-1 px-2 rounded"
                             >
                                 -
                             </button>
-                            <span className="ml-2">{quantityAdded}</span>
+
+                            
                         </div>
                     )}
                 </div>
+
             </div>
 
-
+        </div>
     );
 };
 
