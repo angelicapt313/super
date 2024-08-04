@@ -40,20 +40,27 @@ const ProductCard = ({ product }) => {
 
     return (
 
-        <div className="card-neo flex flex-col md:flex-row border  rounded m-2">
+        <div className="card-neo flex flex-col md:flex-row border rounded m-2">
 
             <div className="md:w-1/2 ">
                 <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-full h-full object-cover object-center rounded" />
+                {product.ProductDiscount > 0 && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded">
+                        %{product.ProductDiscount} OFF
+                    </div>
+                )}
             </div>
 
-            <div className="flex flex-col justify-between m-1 p-2 md:w-1/2">
+            <div className="flex flex-col justify-around m-1 p-2 md:w-1/2">
                 <div>
                     <p className="text-lg font-bold">{product.ProductName}</p>
-                    <p className="text-gray-700">Cantidad: {product.ProductQuantity}</p>
-                    {product.ProductDiscount > 0 && (
 
-                    <p className="text-gray-700">Descuento: %{product.ProductDiscount}</p>
+                    {product.ProductQuantity === 0 ? (
+                        <p className='uppercase text-xs text-red-500/75'>agotado</p>
+                    ) : (
+                        <p className='uppercase text-xs text-green-500/75'>disponible</p>
                     )}
+
                 </div>
 
 
@@ -66,7 +73,7 @@ const ProductCard = ({ product }) => {
 
                         <button
                             onClick={handleAddToCart}
-                            className="btn-add bg-green-500 text-white m-1 px-3 rounded"
+                            className="btn-add bg-green-500 text-white m-1 px-3 rounded "
                         >
                             +
                         </button>
@@ -87,7 +94,7 @@ const ProductCard = ({ product }) => {
                                 -
                             </button>
 
-                            
+
                         </div>
                     )}
                 </div>
