@@ -27,7 +27,7 @@ const DashboardUser = () => {
         }
     }, [accounts, instance]);
 
-    if (userRoles != "Task.Admin") {
+    if (userRoles !== "Task.Admin") {
         return (
         <div className="flex min-h-screen">
             <div className="container mx-auto p-4">
