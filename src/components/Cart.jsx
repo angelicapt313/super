@@ -1,11 +1,41 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../CartContext';
+import { postData} from '../components/ApiCalls'
 
 const Cart = () => {
     
     const { cart, removeFromCart } = useContext(CartContext);
 
     const grandTotal = cart.reduce((acc, product) => acc + product.ProductPrice * product.quantityAdded, 0);
+
+    const handleCheckout = async (apiUrl, url, options = {}) =>  {
+       
+        debugger
+            const token = localStorage.getItem("AccessToken");
+            
+            const headers = {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Credentials':'true',
+              ...options.headers,
+            };
+          
+            if (token) {
+               headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            const response = await postData('http://localhost:7071/api/CheckOutSession', {
+              ...options,
+              headers,
+            });
+          
+            if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.message);
+            }
+            
+            return response.json();
+        
+    }
 
     if (!cart || cart.length === 0) {
         return <p className='font-bold m-4 text-center'>There are no products in the cart.</p>;
@@ -56,9 +86,15 @@ const Cart = () => {
                         <tr>
                             <td colSpan="4" className="px-6 py-4 text-right font-bold">Total</td>
                             <td className="px-6 py-4 border-t border-gray-300 text-lg font-bold">${grandTotal.toFixed(2)}</td>
-                            <td></td>
+                            <td> <button
+                      onClick={() => handleCheckout(cart)}
+                      className="px-2 py-1 text-white bg-green-500 rounded hover:bg-green-700 mr-2"
+                    >
+                      Checkout
+                    </button></td>
                         </tr>
                     </tfoot>
+                   
                 </table>
             </div>
         </div>
