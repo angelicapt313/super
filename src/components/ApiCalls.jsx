@@ -2,9 +2,9 @@
 
 import fetchWithAuth from './RequestService';
 
-export const getData = async () => {
+export const getData = async (apiUrl) => {
   try {
-    const data = await fetchWithAuth('/data');
+    const data = await fetchWithAuth(apiUrl, '/data');
     return data;
   } catch (error) {
     console.error('Error fetching data', error);
@@ -12,12 +12,14 @@ export const getData = async () => {
   }
 };
 
-export const postData = async (data) => {
+export const postData = async (apiUrl, data) => {
   try {
-    const response = await fetchWithAuth('/data', {
+    
+    const response = await fetchWithAuth(apiUrl, '/data', {
       method: 'POST',
       body: JSON.stringify(data),
     });
+    
     return response;
   } catch (error) {
     console.error('Error posting data', error);

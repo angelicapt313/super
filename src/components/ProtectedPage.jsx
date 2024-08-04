@@ -4,37 +4,34 @@ import { loginRequest } from "../authConfig";
 
 const ProtectedPage = () => {
     const { instance, accounts } = useMsal();
-    const [token, setToken] = useState(null);
+  
+    const [userRoles, setUserRoles] = useState(null);
 
     useEffect(() => {
+        
         if (accounts.length > 0) {
             instance.acquireTokenSilent({
                 ...loginRequest,
                 account: accounts[0]
             }).then(response => {
                 
-                localStorage.setItem("token", response.accessToken);
-                setToken(response.accessToken);
+                localStorage.setItem("userRoles", response.idTokenClaims.roles)
+               
+                setUserRoles(response.idTokenClaims.roles);
                 
             }).catch(err => {
                 
                 console.error(err);
-                instance.acquireTokenPopup(loginRequest).then(response => {
-                    localStorage.setItem("token", response.accessToken);
-                    setToken(response.accessToken);
-                }).catch(err => {
-                    console.error(err);
-                });
+                
             });
         }
     }, [accounts, instance]);
 
-    if (!token) {
+    if (userRoles !== "Task.Admin") {
         return <div>Loading...</div>;
     }
 
-    // Realiza llamadas a la API protegida usando el token de acceso
-    return <div>Protected Content</div>;
+    return "Proected View";
 };
 
 export default ProtectedPage;

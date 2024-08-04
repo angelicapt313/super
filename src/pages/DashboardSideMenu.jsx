@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import upload from './Upload'; // Update the path to your actual icon
-import inventory from './Inventory'; // Update the path to your actual icon
-import reports from './Reports'; // Update the path to your actual icon
+import upload from '../assets/images/upload.svg'; // Update the path to your actual icon
+import inventory from '../assets/images/inventory.svg'; // Update the path to your actual icon
+import reports from '../assets/images/reports.svg'; // Update the path to your actual icon
 
 const DashboardSideMenu = () => {
-
-    const [activeView, setActiveView] = useState('');
 
     return (
         <div className="w-64 bg-gray-800 text-white flex flex-col p-4">
@@ -21,7 +19,6 @@ const DashboardSideMenu = () => {
             <Link 
                 to="/inventory" 
                 className="flex items-center space-x-3"
-                onClick={() => setActiveView('inventory')}
             >
                 <img src={inventory} alt="Inventario" className="w-7 h-7" />
                 <span>Inventory</span>

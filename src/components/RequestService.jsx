@@ -1,9 +1,5 @@
-// src/services/fetchUtils.js
 
-const baseURL = 'https://quickstorefunctions.azurewebsites.net/api/GetProductById?';
-const getUrl = 'https://quickstorefunctions.azurewebsites.net/api/GetProducts';
-
-const fetchWithAuth = async (url, options = {}) => {
+const fetchWithAuth = async (apiUrl, url, options = {}) => {
   
   const token = localStorage.getItem("AccessToken");
   
@@ -17,7 +13,7 @@ const fetchWithAuth = async (url, options = {}) => {
      headers['Authorization'] = `Bearer ${token}`;
   }
   
-  const response = await fetch(`${getUrl}`, {
+  const response = await fetch(`${apiUrl}`, {
     ...options,
     headers,
   });
