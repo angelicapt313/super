@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../authConfig";
 import DashboardSideMenu from './DashboardSideMenu';
 import Charts from './Charts';
 
 const DashboardUser = () => {
+    const { instance, accounts } = useMsal();
+    const [userRoles, setUserRoles] = useState(null);
 
+    useEffect(() => {
+        
+        if (accounts.length > 0) {
+            instance.acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0]
+            }).then(response => {
+                
+                localStorage.setItem("token", response.accessToken);
+                localStorage.setItem("userRoles", response.idTokenClaims.roles)
+                
+                setUserRoles(response.idTokenClaims.roles);
+                
+            }).catch(err => {
+               console.log(err);
+            });
+        }
+    }, [accounts, instance]);
+
+    if (userRoles != "Task.Admin") {
+        return (
+        <div className="flex min-h-screen">
+            <div className="container mx-auto p-4">
+            <div>Authorization Required</div>
+            </div>
+           
+        </div>);
+    }
     return (
         <div className="flex min-h-screen">
           

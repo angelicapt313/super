@@ -5,8 +5,10 @@ import { loginRequest } from "../authConfig";
 const ProtectedPage = () => {
     const { instance, accounts } = useMsal();
     const [token, setToken] = useState(null);
+    const [userRoles, setUserRoles] = useState(null);
 
     useEffect(() => {
+        
         if (accounts.length > 0) {
             instance.acquireTokenSilent({
                 ...loginRequest,
@@ -14,7 +16,9 @@ const ProtectedPage = () => {
             }).then(response => {
                 
                 localStorage.setItem("token", response.accessToken);
+                localStorage.setItem("userRoles", response.idTokenClaims.roles)
                 setToken(response.accessToken);
+                setUserRoles(response.idTokenClaims.roles);
                 
             }).catch(err => {
                 
@@ -29,12 +33,12 @@ const ProtectedPage = () => {
         }
     }, [accounts, instance]);
 
-    if (!token) {
+    if (userRoles != "Task.Admin") {
         return <div>Loading...</div>;
     }
 
     // Realiza llamadas a la API protegida usando el token de acceso
-    return <div>Protected Content</div>;
+    return "Proected View";
 };
 
 export default ProtectedPage;
