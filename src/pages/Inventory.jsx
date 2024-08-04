@@ -1,7 +1,6 @@
 import DashboardSideMenu from "./DashboardSideMenu";
 import { React, useState, useEffect } from "react";
 import { getData } from '../components/ApiCalls';
-import { ProductApis } from "../authConfig";
 import EditableTable from './EditableTable';
 
 export class Product {
@@ -28,7 +27,7 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await getData(ProductApis.GetProducts);
+            const response = await getData(process.env.REACT_APP_getProducts);
 
             setProducts(response);
         } catch (error) {
@@ -38,7 +37,7 @@ const Inventory = () => {
 
     const reload = async () => {
         try {
-            const response = await getData(ProductApis.GetProducts);
+            const response = await getData(process.env.REACT_APP_getProducts);
 
             setProducts(response);
         } catch (error) {

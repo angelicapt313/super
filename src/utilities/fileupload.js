@@ -19,7 +19,7 @@ const FileUpload = () => {
       header: true,
       complete: async (results) => {
         const jsonData = results.data;
-        console.log(jsonData);
+       
 
         const response = await fetch('/api/UploadCSV', {
           method: 'POST',

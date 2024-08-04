@@ -1,43 +1,42 @@
 import React, { useContext } from 'react';
 import { CartContext } from '../CartContext';
-import { postData} from '../components/ApiCalls'
+import {checkOutSession} from './ApiCalls'
 
 const Cart = () => {
     
     const { cart, removeFromCart } = useContext(CartContext);
 
     const grandTotal = cart.reduce((acc, product) => acc + product.ProductPrice * product.quantityAdded, 0);
+    const checkOutUrl = process.env.REACT_APP_checkOut;
 
     const handleCheckout = async (cart, url, options = {}) =>  {
        
+        const token = localStorage.getItem("AccessToken");
+        
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Credentials':'true',
+            ...options.headers,
+        };
+        
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
         debugger
-            const token = localStorage.getItem("AccessToken");
+        const response = await checkOutSession(checkOutUrl, cart, {
+            ...options,
+            headers,
+        }).then(o => {
+            window.location.href = o;
+        });
+        
+        if (!response.ok) {
             
-            const headers = {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Credentials':'true',
-              ...options.headers,
-            };
-          
-            if (token) {
-               headers['Authorization'] = `Bearer ${token}`;
-            }
-            
-            const response = await postData('http://localhost:7071/api/CheckOutSession', cart, {
-              ...options,
-              headers,
-            }).then(o => {
-                window.location.href = o;
-            });
-          
-            if (!response.ok) {
-                
-              const error = await response.json();
-              throw new Error(error.message);
-            }
-            
-            
-            return response.json();
+            const error = await response.json();
+            throw new Error(error.message);
+        }
+        
+        return;
         
     }
 

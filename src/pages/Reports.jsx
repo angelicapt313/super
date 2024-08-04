@@ -13,7 +13,7 @@ const Reports = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Lógica para generación de reporte
-        console.log(selectedReport);
+        
     }
 
 

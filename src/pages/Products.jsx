@@ -1,25 +1,19 @@
 import { getData } from "../components/ApiCalls";
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-import { ProductApis } from "../authConfig";
 
 
 const Products = () => {
 
-
   const [productos, setProductos] = useState([]);
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
 
-        let p = await getData(ProductApis.GetProducts);
+        let products = await getData(process.env.REACT_APP_getProducts);
 
-       
-
-        setProductos(p);
-
+        setProductos(products);
 
       } catch (error) {
         console.error('Error fetching data', error);
@@ -39,11 +33,7 @@ const Products = () => {
 
       ))}
     </div>
-
-
   )
 
 };
-
-
 export default Products;
