@@ -42,11 +42,11 @@ const ProductCard = ({ product }) => {
 
         <div className="card-neo flex flex-col md:flex-row border rounded m-2">
 
-            <div className="md:w-1/2 ">
+            <div className="relative md:w-1/2 ">
                 <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-full h-full object-cover object-center rounded" />
                 {product.ProductDiscount > 0 && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded">
-                        %{product.ProductDiscount} OFF
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+                        -{product.ProductDiscount}%
                     </div>
                 )}
             </div>
