@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 const Reports = () => {
 
-    const [activeView, setActiveView] = useState('');
     const [selectedReport, setSelectedReport] = useState('');
 
     const handleSelectionChange = (e) => {
