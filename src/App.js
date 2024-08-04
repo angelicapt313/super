@@ -11,6 +11,8 @@ import DashboardUser from './pages/DashboardUser';
 import Reports from './pages/Reports';
 import Upload from './pages/Upload';
 import Inventory from './pages/Inventory';
+import Success from './components/Success';
+import Failure from './components/Failure';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path='/dashboarduser' element={<DashboardUser />} />
           <Route path='/reports' element={<Reports />} />
           <Route path='/upload' element={<Upload />} />
+          <Route path='/success' element={<Success />} />
+          <Route path='/failure' element={<Failure />} />
           <Route path='/inventory' element={<Inventory />} />
           <Route path='/cart' element={<Cart />} />
           <Route 

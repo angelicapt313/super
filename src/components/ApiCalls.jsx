@@ -1,6 +1,17 @@
-// src/services/apiService.js
-
 import fetchWithAuth from './RequestService';
+
+export class Product {
+  ProductID = "";
+  ProductName = "";
+  ProductDescription = "";
+  ProductPrice = "";
+  ProductQuantity = "";
+  ProductDiscount = "";
+  ProductImageName = "";
+  isDeleted = "";
+  UpdatedAt = "";
+      
+}
 
 export const getData = async (apiUrl) => {
   try {
@@ -13,6 +24,21 @@ export const getData = async (apiUrl) => {
 };
 
 export const postData = async (apiUrl, data) => {
+  try {
+    
+    const response = await fetchWithAuth(apiUrl, '/data', {
+      method: 'POST',
+      body: JSON.stringify(new Product(...data)),
+    });
+    
+    return response;
+  } catch (error) {
+    console.error('Error posting data', error);
+    throw error;
+  }
+};
+
+export const updateProduct = async (apiUrl, data) => {
   try {
     
     const response = await fetchWithAuth(apiUrl, '/data', {

@@ -8,7 +8,7 @@ const Cart = () => {
 
     const grandTotal = cart.reduce((acc, product) => acc + product.ProductPrice * product.quantityAdded, 0);
 
-    const handleCheckout = async (apiUrl, url, options = {}) =>  {
+    const handleCheckout = async (cart, url, options = {}) =>  {
        
         debugger
             const token = localStorage.getItem("AccessToken");
@@ -23,15 +23,19 @@ const Cart = () => {
                headers['Authorization'] = `Bearer ${token}`;
             }
             
-            const response = await postData('http://localhost:7071/api/CheckOutSession', {
+            const response = await postData('http://localhost:7071/api/CheckOutSession', cart, {
               ...options,
               headers,
+            }).then(o => {
+                window.location.href = o;
             });
           
             if (!response.ok) {
+                
               const error = await response.json();
               throw new Error(error.message);
             }
+            
             
             return response.json();
         

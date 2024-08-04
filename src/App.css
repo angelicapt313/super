@@ -1,0 +1,28 @@
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background-color: #f0f4f8;
+    padding: 20px;
+}
+
+.success-icon {
+    color: #28a745;
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+}
+
+.success-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin: 20px 0;
+}
+
+.success-message {
+    font-size: 1.25rem;
+    color: #666;
+}
