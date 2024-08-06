@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
 import Pagination from '../utilities/pagination';
 import NotificationService from '../services/NotificationService';
+import { updateProduct } from '../components/ApiCalls';
 
-const EditableTable = ({ products, setProducts }) => {
+export class Product{
+    ProductID = "";
+    ProductName = "";
+    ProductDescription = "";
+    ProductPrice = 0.00;
+    ProductDiscount = 0.00;
+    ProductQuantity = 0;
+    ProductImageName = "";
+    UpdatedAt = "";
+}
+
+const EditableTable = ({ products, setProducts, reloadData }) => {
+  
   const [editRowId, setEditRowId] = useState(null);
   const [formData, setFormData] = useState({ ProductName: '', ProductPrice: '' });
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,13 +29,30 @@ const EditableTable = ({ products, setProducts }) => {
 
   const handleEditClick = (product) => {
     setEditRowId(product.ProductID);
-    setFormData({ ProductName: product.ProductName, ProductPrice: product.ProductPrice });
+    setFormData({ ProductName: product.ProductName, 
+      ProductPrice: product.ProductPrice, 
+      ProductDescription: product.ProductDescription,
+      ProductImageName: product.ProductImageName });
   };
 
-  const handleSaveClick = (id) => {
+
+  const handleSaveClick = async (id) => {
+    
     setProducts(products.map(product => (product.ProductID === id ? { ...product, ...formData } : product)));
     setEditRowId(null);
-    setFormData({ ProductName: '', ProductPrice: '' });
+    setFormData({ ProductName: '', ProductPrice: '' , ProductDescription: '', ProductImageName: '' });
+
+    var prod = new Product();
+    prod.ProductID = id;
+    prod.ProductName = formData.ProductName;
+    prod.ProductDescription = formData.ProductDescription;
+    prod.ProductPrice = formData.ProductPrice;
+    prod.ProductDiscount = 0.0;
+    prod.ProductImageName = formData.ProductImageName;
+    
+
+    await updateProduct(process.env.updateProduct, prod);
+    reloadData();
     openModal("Data Saved Succesfully");
   };
 
@@ -36,13 +66,26 @@ const EditableTable = ({ products, setProducts }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleDelete = (id) => {
-    setProducts(products.filter(product => product.ProductID !== id));
+  const handleDelete = async (id) => {
+    
+    var prod = new Product();
+    prod.ProductID = id;
+    prod.ProductName = formData.ProductName;
+    prod.ProductDescription = formData.ProductDescription;
+    prod.ProductPrice = formData.ProductPrice;
+    prod.ProductDiscount = formData.ProductDiscount;
+    prod.ProductImageName = formData.ProductImageName;
+    
+    await updateProduct(process.env.updateProduct, prod);
+
+    reloadData();
+    openModal("Deleted Succesfully!")
   };
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
+  
   const currentItems = products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
+  
   return (
     <div className="p-4">
          <NotificationService isOpen={isModalOpen} onClose={closeModal} children={"Data Being Send From Parent"}></NotificationService>
@@ -57,10 +100,13 @@ const EditableTable = ({ products, setProducts }) => {
           </tr>
         </thead>
         <tbody>
+        
           {currentItems.map((product) => (
+            
             <tr key={product.ProductID}>
               <td className="py-2 px-4 border-b">
-                <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
+              <img name="ProductImageName" src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
+
               </td>
               <td className="py-2 px-4 border-b">
                 {editRowId === product.ProductID ? (
@@ -81,6 +127,19 @@ const EditableTable = ({ products, setProducts }) => {
                     type="number"
                     name="ProductPrice"
                     value={formData.ProductPrice}
+                    onChange={handleInputChange}
+                    className="w-full px-2 py-1 border"
+                  />
+                ) : (
+                  product.ProductPrice
+                )}
+              </td>
+              <td className="py-2 px-4 border-b">
+                {editRowId === product.ProductDescription ? (
+                  <input
+                    type="text"
+                    name="ProductDescription"
+                    value={formData.ProductDescription}
                     onChange={handleInputChange}
                     className="w-full px-2 py-1 border"
                   />

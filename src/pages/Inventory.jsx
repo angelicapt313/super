@@ -1,7 +1,6 @@
 import DashboardSideMenu from "./DashboardSideMenu";
 import { React, useState, useEffect } from "react";
 import { getData } from '../components/ApiCalls';
-import { ProductApis } from "../authConfig";
 import EditableTable from './EditableTable';
 
 export class Product {
@@ -20,6 +19,7 @@ export class Product {
 const Inventory = () => {
    
     const [products, setProducts] = useState([]);
+  
    
     useEffect(() => {
         fetchProducts();
@@ -27,7 +27,17 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await getData(ProductApis.GetProducts);
+            const response = await getData(process.env.REACT_APP_getProducts);
+
+            setProducts(response);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
+
+    const reload = async () => {
+        try {
+            const response = await getData(process.env.REACT_APP_getProducts);
 
             setProducts(response);
         } catch (error) {
@@ -43,7 +53,7 @@ const Inventory = () => {
             {/* Main Content */}
             <div className="flex-1 p-6">
             
-             <EditableTable products={products} setProducts={setProducts} />
+             <EditableTable products={products} setProducts={setProducts} reloadData={reload} />
 
             </div>
         </div>
