@@ -51,7 +51,7 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
     prod.ProductImageName = formData.ProductImageName;
     
 
-    await updateProduct(process.env.updateProduct, prod);
+    await updateProduct(process.env.REACT_APP_updateProducts, prod);
     reloadData();
     openModal("Data Saved Succesfully");
   };
