@@ -26,6 +26,7 @@ export class Cart {
 
 export const getData = async (apiUrl) => {
   try {
+    
     const data = await fetchWithAuth(apiUrl, '/data');
     return data;
   } catch (error) {
