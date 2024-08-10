@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
+import { v4 as uuidv4 } from 'uuid';
+
+export class Product {
+  ProductID = uuidv4().toString();
+  StoreID = "";
+  ProductName = "";
+  ProductDescription = "";
+  ProductPrice = 0;
+  ProductQuantity = 0;
+  ProductDiscount = 0;
+  ProductImageName = "";
+  isDeleted = false;
+      
+}
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
+  const [payload, createPayload] = useState([]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -13,26 +28,28 @@ const FileUpload = () => {
       alert('Please select a file first.');
       return;
     }
-
+ 
     
     Papa.parse(file, {
       header: true,
       complete: async (results) => {
-        const jsonData = results.data;
-       
-
-        const response = await fetch('/api/UploadCSV', {
+        
+        createPayload(results.data);
+        
+        const response = await fetch(process.env.REACT_APP_uploadCSV, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(jsonData)
+          body: JSON.stringify<Product>(payload)
         });
 
         if (response.ok) {
           alert('File uploaded successfully!');
+          
         } else {
           alert('Failed to upload file.');
+          
         }
       }
     });
