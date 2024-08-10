@@ -13,6 +13,7 @@ import Upload from './pages/Upload';
 import Inventory from './pages/Inventory';
 import Success from './components/Success';
 import Failure from './components/Failure';
+import Sales from './pages/Sales';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path='/success' element={<Success />} />
           <Route path='/failure' element={<Failure />} />
           <Route path='/inventory' element={<Inventory />} />
+          <Route path='/sales' element={<Sales />} />
           <Route path='/cart' element={<Cart />} />
           <Route 
             path="/protected" 

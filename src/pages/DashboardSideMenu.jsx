@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import upload from '../assets/images/upload.svg'; // Update the path to your actual icon
 import inventory from '../assets/images/inventory.svg'; // Update the path to your actual icon
 import reports from '../assets/images/reports.svg'; // Update the path to your actual icon
+import sales from '../assets/images/sales.png'
 
 const DashboardSideMenu = () => {
 
@@ -26,6 +27,10 @@ const DashboardSideMenu = () => {
             <Link to="/reports" className="flex items-center space-x-3">
                 <img src={reports} alt="Reportes" className="w-6 h-6" />
                 <span>Reports</span>
+            </Link>
+            <Link to="/sales" className="flex items-center space-x-3">
+                <img src={sales} alt="Reportes" className="w-6 h-6" />
+                <span>Sales</span>
             </Link>
         </div>
     </div>
