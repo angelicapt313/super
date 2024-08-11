@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
 
         
         <div className="relative md:w-1/2 ">
-            <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-full h-full object-cover object-center rounded" />
+            <img src={require(`../assets/images/${product.ProductImageName ? product.ProductImageName : ""}`)} alt={""} className="w-full h-full object-cover object-center rounded" />
             {product.ProductDiscount > 0 && (
                 <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
                     -{product.ProductDiscount}%

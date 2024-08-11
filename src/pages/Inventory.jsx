@@ -27,9 +27,18 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await getData(process.env.REACT_APP_getProducts);
-
-            setProducts(response);
+            if(!sessionStorage.getItem("productList")){
+                var prodList = await getData(process.env.REACT_APP_getProducts);
+                sessionStorage.setItem("productList",  JSON.stringify(prodList));
+                setProducts(prodList);
+               
+              }else{
+              
+                var cachedProducts = sessionStorage.getItem("productList");
+      
+                setProducts(JSON.parse(cachedProducts));
+              }
+           
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -37,9 +46,17 @@ const Inventory = () => {
 
     const reload = async () => {
         try {
-            const response = await getData(process.env.REACT_APP_getProducts);
-
-            setProducts(response);
+            if(!sessionStorage.getItem("productList")){
+                var prodList = await getData(process.env.REACT_APP_getProducts);
+                sessionStorage.setItem("productList",  JSON.stringify(prodList));
+                setProducts(prodList);
+               
+              }else{
+              
+                var cachedProducts = sessionStorage.getItem("productList");
+      
+                setProducts(JSON.parse(cachedProducts));
+              }
         } catch (error) {
             console.error('Error fetching products:', error);
         }

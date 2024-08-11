@@ -13,15 +13,17 @@ const Products = () => {
 
     const fetchData = async () => {
       try {
-        debugger
+        
         if(!sessionStorage.getItem("productList")){
-
-          setProductos(await getData(process.env.REACT_APP_getProducts));
+          var prodList = await getData(process.env.REACT_APP_getProducts);
+          sessionStorage.setItem("productList",  JSON.stringify(prodList));
+          setProductos(prodList);
+         
         }else{
         
           var cachedProducts = sessionStorage.getItem("productList");
 
-          setProductos(cachedProducts);
+          setProductos(JSON.parse(cachedProducts));
         }
       } catch (error) {
         

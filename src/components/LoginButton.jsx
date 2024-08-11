@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from '../authConfig';
 import iconUser from '../assets/images/iconUser.png';
@@ -8,7 +8,8 @@ const LoginButton = () => {
     const { instance } = useMsal();
     const [user, setUser] = useState("");
 
-    const handleLogin = () => {
+    
+    const handleLogin = async() => {
         instance.loginPopup(loginRequest)
         .then(r => {
             
