@@ -1,27 +1,18 @@
 // src/components/MyComponent.js
 
-import React, { useEffect, useState } from 'react';
-import { getData, postData } from '../components/ApiCalls';
+import React, {  useState } from 'react';
+import {  postData } from '../components/ApiCalls';
+import fetchWithAuth from './RequestService';
 
 const ProductList = () => {
   const [data, setData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handlePostData = async () => {
     try {
         
       const newData = { "id": "fc6ac2d8-43d4-4dbe-823c-3f768686be84"};
+      
       const result = await postData(newData);
       
      

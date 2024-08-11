@@ -1,28 +1,5 @@
 import fetchWithAuth from './RequestService';
-
-export class Product {
-  ProductID = "";
-  ProductName = "";
-  ProductDescription = "";
-  ProductPrice = "";
-  ProductQuantity = "";
-  ProductDiscount = "";
-  ProductImageName = "";
-  isDeleted = "";
-  UpdatedAt = "";
-      
-}
-
-export class Cart {
-  CartID = ""
-  CartList = [Product]
-  UserID = ""
-  CartTotal = 0
-  CartItemsQuantity = 0
-  CartStatus = ""
-  CartCreatedDate = ""
-  CartFullfilledDate = ""
-}
+import { Store } from '../Models/Models';
 
 export const getData = async (apiUrl) => {
   try {
@@ -42,7 +19,7 @@ export const postData = async (apiUrl, data) => {
       method: 'POST',
       body: data,
     });
-    
+    debugger
     return response;
   } catch (error) {
     console.error('Error posting data', error);
@@ -52,7 +29,7 @@ export const postData = async (apiUrl, data) => {
 
 export const checkOutSession = async (apiUrl, data) => {
   try {
-    debugger
+    
     const response = await fetchWithAuth(apiUrl, '/data', {
       method: 'POST',
       body: JSON.stringify({ Cart: data }),
@@ -80,4 +57,46 @@ export const updateProduct = async (apiUrl, data) => {
   }
 };
 
-// Add other service functions as needed
+export const createTransaction = async (apiUrl, data) => {
+  try {
+    
+    const response = await fetchWithAuth(apiUrl, '/data', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    
+    return response;
+  } catch (error) {
+    console.error('Error posting data', error);
+    throw error;
+  }
+};
+
+export const getStoreInfo = async () => {
+  try {
+      var store = new Store();
+      store.StoreID =  "0c7e7b2f-a856-4fde-a655-678b7763b412";
+    
+      const response = await getTransactions(process.env.REACT_APP_getTransactions, store);
+      
+      return response;
+  } catch (error) {
+      console.error('Error fetching products:', error);
+  }
+};
+
+export const getTransactions = async (apiUrl, data) => {
+  try {
+    
+    const response = await fetchWithAuth(apiUrl, '/data', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    
+    return response;
+  } catch (error) {
+    console.error('Error posting data', error);
+    throw error;
+  }
+};
+

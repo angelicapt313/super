@@ -1,3 +1,4 @@
+import { postData } from "./ApiCalls";
 
 const fetchWithAuth = async (apiUrl, url, options = {}) => {
   
@@ -25,5 +26,6 @@ const fetchWithAuth = async (apiUrl, url, options = {}) => {
   
   return response.json();
 };
+
 
 export default fetchWithAuth;

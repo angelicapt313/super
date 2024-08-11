@@ -1,6 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CartContext } from '../CartContext';
-import {checkOutSession} from './ApiCalls'
+import {checkOutSession, createTransaction} from './ApiCalls'
+import NotificationService from '../services/NotificationService';
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../authConfig";
+import {Transaction} from '../Models/Models';
 
 const Cart = () => {
     
@@ -8,6 +12,27 @@ const Cart = () => {
 
     const grandTotal = cart.reduce((acc, product) => acc + product.ProductPrice * product.quantityAdded, 0);
     const checkOutUrl = process.env.REACT_APP_checkOut;
+
+    const { instance, accounts } = useMsal();
+
+    useEffect(() => {
+        
+        if (accounts.length > 0) {
+            instance.acquireTokenSilent({
+                ...loginRequest,
+                account: accounts[0]
+            }).then(response => {
+                
+                console.log(response);
+              
+                
+            }).catch(err => {
+                
+                console.error(err);
+                
+            });
+        }
+    }, [accounts, instance]);
 
     const handleCheckout = async (cart, url, options = {}) =>  {
        
@@ -22,21 +47,17 @@ const Cart = () => {
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
-        debugger
-        const response = await checkOutSession(checkOutUrl, cart, {
+        
+        var response = await checkOutSession(checkOutUrl, cart, {
             ...options,
             headers,
         }).then(o => {
+            
             window.location.href = o;
+
         });
         
-        if (!response.ok) {
-            
-            const error = await response.json();
-            throw new Error(error.message);
-        }
-        
-        return;
+        return response;
         
     }
 

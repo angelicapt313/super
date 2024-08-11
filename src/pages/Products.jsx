@@ -1,21 +1,31 @@
 import { getData } from "../components/ApiCalls";
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-
+import NotificationService from '../services/NotificationService';
 
 const Products = () => {
 
   const [productos, setProductos] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const closeModal = () => setModalOpen(false);
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
+        debugger
+        if(!sessionStorage.getItem("productList")){
 
-        let products = await getData(process.env.REACT_APP_getProducts);
+          setProductos(await getData(process.env.REACT_APP_getProducts));
+        }else{
+        
+          var cachedProducts = sessionStorage.getItem("productList");
 
-        setProductos(products);
-
+          setProductos(cachedProducts);
+        }
       } catch (error) {
+        
+        setModalOpen(true);
         console.error('Error fetching data', error);
       }
     };
@@ -32,6 +42,10 @@ const Products = () => {
         </div>
 
       ))}
+
+      {
+       <NotificationService isOpen={isModalOpen} onClose={closeModal} children={"Error Loading Products"}></NotificationService>
+      }
     </div>
   )
 

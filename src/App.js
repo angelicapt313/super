@@ -15,6 +15,8 @@ import Success from './components/Success';
 import Failure from './components/Failure';
 import Sales from './pages/Sales';
 
+import QuickStoreDashboard from './quickStoreDashboard/Dashboard';
+
 function App() {
   return (
     <div className="App">
@@ -24,6 +26,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/products' element={<Products />} />
           <Route path='/dashboarduser' element={<DashboardUser />} />
+          <Route path='/quickstoredashboard' element={<QuickStoreDashboard/>} />
           <Route path='/reports' element={<Reports />} />
           <Route path='/upload' element={<Upload />} />
           <Route path='/success' element={<Success />} />

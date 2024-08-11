@@ -15,8 +15,6 @@ const ProtectedPage = () => {
                 account: accounts[0]
             }).then(response => {
                 
-                localStorage.setItem("userRoles", response.idTokenClaims.roles)
-               
                 setUserRoles(response.idTokenClaims.roles);
                 
             }).catch(err => {
