@@ -2,17 +2,8 @@ import React, { useState } from 'react';
 import Pagination from '../utilities/pagination';
 import NotificationService from '../services/NotificationService';
 import { updateProduct } from '../components/ApiCalls';
+import {Product }  from "../Models/Models.js"
 
-export class Product{
-    ProductID = "";
-    ProductName = "";
-    ProductDescription = "";
-    ProductPrice = 0.00;
-    ProductDiscount = 0.00;
-    ProductQuantity = 0;
-    ProductImageName = "";
-    UpdatedAt = "";
-}
 
 const EditableTable = ({ products, setProducts, reloadData }) => {
   
@@ -30,9 +21,8 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
   const handleEditClick = (product) => {
     setEditRowId(product.ProductID);
     setFormData({ ProductName: product.ProductName, 
-      ProductPrice: product.ProductPrice, 
-      ProductDescription: product.ProductDescription,
-      ProductImageName: product.ProductImageName });
+      ProductPrice: product.Price, 
+      ProductDescription: product.Description });
   };
 
 
@@ -45,10 +35,10 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
     var prod = new Product();
     prod.ProductID = id;
     prod.ProductName = formData.ProductName;
-    prod.ProductDescription = formData.ProductDescription;
-    prod.ProductPrice = formData.ProductPrice;
-    prod.ProductDiscount = 0.0;
-    prod.ProductImageName = formData.ProductImageName;
+    prod.ProductDescription = formData.Description;
+    prod.ProductPrice = formData.Price;
+    //prod.ProductDiscount = 0.0;
+    //prod.ProductImageName = formData.ProductImageName;
     
 
     await updateProduct(process.env.REACT_APP_updateProducts, prod);
@@ -71,10 +61,10 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
     var prod = new Product();
     prod.ProductID = id;
     prod.ProductName = formData.ProductName;
-    prod.ProductDescription = formData.ProductDescription;
-    prod.ProductPrice = formData.ProductPrice;
-    prod.ProductDiscount = formData.ProductDiscount;
-    prod.ProductImageName = formData.ProductImageName;
+    prod.ProductDescription = formData.Description;
+    prod.ProductPrice = formData.Price;
+    //prod.ProductDiscount = formData.ProductDiscount;
+    //prod.ProductImageName = formData.ProductImageName;
     
     await updateProduct(process.env.updateProduct, prod);
 
@@ -104,10 +94,10 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
           {currentItems.map((product) => (
             
             <tr key={product.ProductID}>
-              <td className="py-2 px-4 border-b">
+              {/* <td className="py-2 px-4 border-b">
               <img name="ProductImageName" src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
 
-              </td>
+              </td> */}
               <td className="py-2 px-4 border-b">
                 {editRowId === product.ProductID ? (
                   <input
@@ -122,7 +112,7 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
                 )}
               </td>
               <td className="py-2 px-4 border-b">
-                {editRowId === product.ProductID ? (
+                {editRowId === product.Price ? (
                   <input
                     type="number"
                     name="ProductPrice"
@@ -131,15 +121,15 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
                     className="w-full px-2 py-1 border"
                   />
                 ) : (
-                  product.ProductPrice
+                  product.Price
                 )}
               </td>
               <td className="py-2 px-4 border-b">
-                {editRowId === product.ProductDescription ? (
+                {editRowId === product.Description ? (
                   <input
                     type="text"
                     name="ProductDescription"
-                    value={formData.ProductDescription}
+                    value={formData.Description}
                     onChange={handleInputChange}
                     className="w-full px-2 py-1 border"
                   />

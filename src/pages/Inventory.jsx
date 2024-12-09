@@ -3,18 +3,7 @@ import { React, useState, useEffect } from "react";
 import { getData } from '../components/ApiCalls';
 import EditableTable from './EditableTable';
 
-export class Product {
-    ProductID = "";
-    ProductName = "";
-    ProductDescription = "";
-    ProductPrice = "";
-    ProductQuantity = "";
-    ProductDiscount = "";
-    ProductImageName = "";
-    isDeleted = "";
-    UpdatedAt = "";
-        
-}
+
 
 const Inventory = () => {
    
