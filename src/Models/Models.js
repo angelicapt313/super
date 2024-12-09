@@ -12,15 +12,14 @@ export class Transaction {
 
   export class Product {
     ProductID = "";
+    StoreID = "";
     ProductName = "";
-    ProductDescription = "";
-    ProductPrice = "";
-    ProductQuantity = "";
-    ProductDiscount = "";
-    ProductImageName = "";
-    isDeleted = "";
+    Description = "";
+    Price = "";
+    StocktQuantity = "";
+    IsDeleted = "";
     UpdatedAt = "";
-        
+    CreatedAt = "";
   }
   
   export class Cart {

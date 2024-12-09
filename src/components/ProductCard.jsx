@@ -9,12 +9,12 @@ const ProductCard = ({ product }) => {
     const [quantityAdded, setQuantityAdded] = useState(0);
 
     useEffect(() => {
-
+        
         const existingProduct = cart.find(item => item.ProductID === product.ProductID);
         if (existingProduct) {
             setQuantityAdded(existingProduct.quantityAdded);
         }
-    }, [cart, product.ProductID, product.ProductImageName != "" ? product.ProductImageName : "imgCart.svg"]);
+    }, [cart, product.ProductID, product.ProductImageName !== "" ? product.ProductImageName : "imgCart.svg"]);
 
     const handleAddToCart = () => {
 
@@ -44,14 +44,14 @@ const ProductCard = ({ product }) => {
         <div className="card-neo flex flex-col md:flex-row border rounded m-2">
 
         
-        <div className="relative md:w-1/2 ">
+        {/* <div className="relative md:w-1/2 ">
             <img src={require(`../assets/images/${product.ProductImageName ? product.ProductImageName : ""}`)} alt={""} className="w-full h-full object-cover object-center rounded" />
             {product.ProductDiscount > 0 && (
                 <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
                     -{product.ProductDiscount}%
                 </div>
             )}
-        </div>
+        </div> */}
             
 
             <div className="flex flex-col justify-around m-1 p-2 md:w-1/2">

@@ -10,7 +10,7 @@ const Cart = () => {
     
     const { cart, removeFromCart } = useContext(CartContext);
 
-    const grandTotal = cart.reduce((acc, product) => acc + product.ProductPrice * product.quantityAdded, 0);
+    const grandTotal = cart.reduce((acc, product) => acc + product.Price * product.quantityAdded, 0);
     const checkOutUrl = process.env.REACT_APP_checkOut;
 
     const { instance, accounts } = useMsal();
@@ -84,24 +84,26 @@ const Cart = () => {
                         {cart.map(product => (
                             <tr key={product.ProductID}>
                                 <td className="w-1/12"></td>
-                                <td className="w-3/12 px-6 py-4 border-b border-gray-300 text-sm">
+                                {/* <td className="w-3/12 px-6 py-4 border-b border-gray-300 text-sm">
                                     <div className="flex items-center">
                                         <img src={require(`../assets/images/${product.ProductImageName}`)} alt={product.ProductImageName} className="w-16 h-16 object-cover" />
                                         <div className="ml-4">
                                             <p className="text-gray-900 whitespace-no-wrap">{product.ProductName}</p>
                                         </div>
                                     </div>
+                                </td> */}
+                                <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
+                                    <p className="text-gray-900 whitespace-no-wrap">${product.Price}</p>
                                 </td>
                                 <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
-                                    <p className="text-gray-900 whitespace-no-wrap">${product.ProductPrice}</p>
+                                    <p className="text-gray-900 whitespace-no-wrap">{product.StockQuantity}</p>
                                 </td>
                                 <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
-                                    <p className="text-gray-900 whitespace-no-wrap">{product.quantityAdded}</p>
+                                    <p className="text-gray-900 whitespace-no-wrap">${(product.Price * 
+                                        product.quantityAdded).toFixed(2)}</p>
                                 </td>
-                                <td className="w-2/12 px-6 py-4 border-b border-gray-300 text-sm">
-                                    <p className="text-gray-900 whitespace-no-wrap">${(product.ProductPrice * product.quantityAdded).toFixed(2)}</p>
-                                </td>
-                                <td className="w-1/12 w-2/12 px-6 py-4 border-b border-gray-300"><button className='px-2 py-2 bg-red-500/100 rounded-lg' onClick={() => removeFromCart(product.ProductID)} >X</button>
+                                <td className="w-1/12 w-2/12 px-6 py-4 border-b border-gray-300"><button className='px-2 py-2 bg-red-500/100 rounded-lg' 
+                                onClick={() => removeFromCart(product.ProductID)} >X</button>
                                 </td>
                             </tr>
                         ))}
