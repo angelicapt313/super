@@ -16,6 +16,7 @@ const Inventory = () => {
 
     const fetchProducts = async () => {
         try {
+            
             if(!sessionStorage.getItem("productList")){
                 var prodList = await getData(process.env.REACT_APP_getProducts);
                 sessionStorage.setItem("productList",  JSON.stringify(prodList));
@@ -35,6 +36,7 @@ const Inventory = () => {
 
     const reload = async () => {
         try {
+            
             if(!sessionStorage.getItem("productList")){
                 var prodList = await getData(process.env.REACT_APP_getProducts);
                 sessionStorage.setItem("productList",  JSON.stringify(prodList));

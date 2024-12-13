@@ -1,10 +1,17 @@
-export class Transaction {
-    TransactionID = "";
-    UserID = "";
-    StoreID = "";
+
+export class Transactions {
+    TransactionsID = "";
     OrderID = "";
-        
+    StoreID = "";
+    StoreName = "";
+    UserID = "";
+    UserName = "";
+    ProductList = [Product];
+    CreatedDate = Date.now();
+    UpdatedDate = Date.now();
+    TransactionStatus = "";
   }
+
   export class Store {
     StoreID = "";
         
@@ -16,15 +23,15 @@ export class Transaction {
     ProductName = "";
     Description = "";
     Price = "";
-    StocktQuantity = "";
-    IsDeleted = "";
-    UpdatedAt = "";
+    StockQuantity = "";
     CreatedAt = "";
+    UpdatedAt = "";
+    IsDeleted = "";
   }
   
   export class Cart {
     CartID = ""
-    CartList = [Product]
+    CartList = []
     UserID = ""
     CartTotal = 0
     CartItemsQuantity = 0

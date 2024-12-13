@@ -1,23 +1,26 @@
 import React, { useContext, useEffect } from 'react';
 import { CartContext } from '../CartContext';
-import {checkOutSession, createTransaction} from './ApiCalls'
+import {createTransaction} from './ApiCalls'
 import NotificationService from '../services/NotificationService';
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../authConfig";
-import {Transaction} from '../Models/Models';
+import {Transactions, Product} from '../Models/Models.js';
+import { v4 as uuidv4 } from 'uuid';
+import { TransactionStatus } from '../Models/TransactionStatus.ts';
 
 const Cart = () => {
     
     const { cart, removeFromCart } = useContext(CartContext);
 
     const grandTotal = cart.reduce((acc, product) => acc + product.Price * product.quantityAdded, 0);
-    const checkOutUrl = process.env.REACT_APP_checkOut;
+    const createTransactionUrl = process.env.REACT_APP_createTransaction;
 
     const { instance, accounts } = useMsal();
 
     useEffect(() => {
         
         if (accounts.length > 0) {
+
             instance.acquireTokenSilent({
                 ...loginRequest,
                 account: accounts[0]
@@ -34,8 +37,9 @@ const Cart = () => {
         }
     }, [accounts, instance]);
 
+   
     const handleCheckout = async (cart, url, options = {}) =>  {
-       
+      
         const token = localStorage.getItem("AccessToken");
         
         const headers = {
@@ -47,18 +51,41 @@ const Cart = () => {
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
-        
-        var response = await checkOutSession(checkOutUrl, cart, {
-            ...options,
-            headers,
-        }).then(o => {
-            
-            window.location.href = o;
+        debugger
+        const transaction = new Transactions()
+        transaction.TransactionsID = uuidv4();
+        transaction.UserID = uuidv4();
+        transaction.UserName = 'dom testname';
+        transaction.StoreID = cart[0].StoreID !== undefined ? cart[0].StoreID : uuidv4();
+        transaction.StoreName = cart[0].StoreName !== undefined ? cart[0].StoreName : 'test Store Name';
+        transaction.OrderID = uuidv4();
+        transaction.CreatedDate = new Date().toISOString();
+        transaction.UpdatedDate = new Date().toISOString();
+        transaction.TransactionStatus = TransactionStatus.Active;
+        debugger
+        transaction.ProductList = JSON.stringify(cart.map(product => {
 
-        });
-        
-        return response;
-        
+            const prod = new Product();
+            prod.ProductID = product.ProductID;
+            prod.StoreID = product.StoreID;
+            prod.ProductName = product.ProductName;
+            prod.Description = product.Description;
+            prod.Price = product.Price;
+            prod.StockQuantity = product.StockQuantity;
+            prod.CreatedAt = product.CreatedAt;
+            prod.UpdatedAt = product.UpdatedAt;
+            prod.IsDeleted = product.IsDeleted;
+
+            return prod;
+        }));
+       
+        await createTransaction(createTransactionUrl, transaction).then(o => {
+          
+            NotificationService.success('Transaction created successfully');
+        }).catch(err => {
+            console.error(err);
+        }
+        )
     }
 
     if (!cart || cart.length === 0) {
