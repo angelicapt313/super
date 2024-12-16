@@ -64,7 +64,7 @@ export const createTransaction = async (apiUrl, data) => {
       method: 'POST',
       body: JSON.stringify(data),
     });
-    
+
     return response;
   } catch (error) {
     console.error('Error posting data', error);

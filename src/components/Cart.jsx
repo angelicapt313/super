@@ -26,7 +26,7 @@ const Cart = () => {
                 account: accounts[0]
             }).then(response => {
                 
-                console.log(response);
+                //console.log(response);
               
                 
             }).catch(err => {
@@ -51,7 +51,7 @@ const Cart = () => {
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
-        debugger
+        
         const transaction = new Transactions()
         transaction.TransactionsID = uuidv4();
         transaction.UserID = uuidv4();
@@ -62,7 +62,7 @@ const Cart = () => {
         transaction.CreatedDate = new Date().toISOString();
         transaction.UpdatedDate = new Date().toISOString();
         transaction.TransactionStatus = TransactionStatus.Active;
-        debugger
+        
         transaction.ProductList = JSON.stringify(cart.map(product => {
 
             const prod = new Product();
@@ -80,7 +80,7 @@ const Cart = () => {
         }));
        
         await createTransaction(createTransactionUrl, transaction).then(o => {
-          
+          debugger
             NotificationService.success('Transaction created successfully');
         }).catch(err => {
             console.error(err);

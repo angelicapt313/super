@@ -34,8 +34,8 @@ const CreateUser = () => {
         var result = await postWithAuth(process.env.REACT_APP_createUser, user);
 
         
-        console.log('Result:', result);
-        console.log('Form Data:', formData);
+        //console.log('Result:', result);
+        //console.log('Form Data:', formData);
        
     };
 
