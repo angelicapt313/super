@@ -1,4 +1,4 @@
-import { getData } from "../components/ApiCalls";
+
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import NotificationService from '../services/NotificationService';
@@ -10,35 +10,68 @@ const Products = () => {
   const [searchProduct, setSearchProduct] = useState("");
   const closeModal = () => setModalOpen(false);
 
-  const filteredProducts = productos.filter(product =>
-    product.ProductName.toLowerCase().includes(searchProduct.toLowerCase())
-  );
+  const filteredProducts = productos.filter(product => {
+    return product;
+  });
 
+ async function fetchProducts() {
+    try {
 
-  useEffect(() => {
+      if (sessionStorage.getItem("productList")) {
 
-    const fetchData = async () => {
-      try {
+        var cachedProducts = sessionStorage.getItem("productList");
 
-        if (!sessionStorage.getItem("productList")) {
-          var prodList = await getData(process.env.REACT_APP_getProducts);
-          sessionStorage.setItem("productList", JSON.stringify(prodList));
-          setProductos(prodList);
+        setProductos(JSON.parse(cachedProducts));
 
-        } else {
+      } else {
 
-          var cachedProducts = sessionStorage.getItem("productList");
-
-          setProductos(JSON.parse(cachedProducts));
-        }
-      } catch (error) {
-
-        setModalOpen(true);
-        console.error('Error fetching data', error);
+        await getProducts();
+       
       }
+
+    } catch (error) {
+
+      setModalOpen(true);
+      console.error('Error fetching data', error);
+    }
+  }
+
+  async function getProducts() {
+    
+      const token = localStorage.getItem("AccessToken");
+
+       const headers = {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Credentials': 'true'
     };
 
-    fetchData();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+   
+    await fetch(process.env.REACT_APP_getProducts, {
+      method: 'GET',
+      headers: headers
+    }).then(response => {
+      
+      if (response.ok) {
+        return response.body.getReader().read().then(function (result) {
+          //console.log(JSON.parse(result.value));
+          var decoder = new TextDecoder();
+          var string = decoder.decode(result.value);
+          sessionStorage.setItem("productList", string);
+          setProductos(JSON.parse(string));
+        });
+      }
+
+    }).finally(() => {
+      console.log("Product List Loaded");
+    });
+
+  }
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
   return (

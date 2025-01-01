@@ -1,10 +1,11 @@
+import { v4 as uuidv4 } from 'uuid';
 
 export class Transactions {
-    TransactionsID = "";
-    OrderID = "";
-    StoreID = "";
+    TransactionsID =  uuidv4();
+    OrderID =  uuidv4();
+    StoreID =  "";
     StoreName = "";
-    UserID = "";
+    UserID =  "";
     UserName = "";
     ProductList = [Product];
     CreatedDate = Date.now();

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CartContext } from '../CartContext';
 import {createTransaction} from './ApiCalls'
 import NotificationService from '../services/NotificationService';
@@ -9,51 +9,38 @@ import { v4 as uuidv4 } from 'uuid';
 import { TransactionStatus } from '../Models/TransactionStatus.ts';
 
 const Cart = () => {
-    
+    const closeModal = () => setModalOpen(false);
+    const [isModalOpen, setModalOpen] = useState(false);
     const { cart, removeFromCart } = useContext(CartContext);
-
+    
     const grandTotal = cart.reduce((acc, product) => acc + product.Price * product.quantityAdded, 0);
-    const createTransactionUrl = process.env.REACT_APP_createTransaction;
-
+    
     const { instance, accounts } = useMsal();
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        if (accounts.length > 0) {
+    //     if (accounts.length > 0) {
 
-            instance.acquireTokenSilent({
-                ...loginRequest,
-                account: accounts[0]
-            }).then(response => {
+    //         instance.acquireTokenSilent({
+    //             ...loginRequest,
+    //             account: accounts[0]
+    //         }).then(response => {
                 
-                //console.log(response);
+    //             //console.log(response);
               
                 
-            }).catch(err => {
+    //         }).catch(err => {
                 
-                console.error(err);
+    //             console.error(err);
                 
-            });
-        }
-    }, [accounts, instance]);
+    //         });
+    //     }
+    // }, [accounts, instance]);
+
 
    
-    const handleCheckout = async (cart, url, options = {}) =>  {
-      
-        const token = localStorage.getItem("AccessToken");
-        
-        const headers = {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Credentials':'true',
-            ...options.headers,
-        };
-        
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
-        
+    const HandleCheckout = async (cart) =>  {
         const transaction = new Transactions()
-        transaction.TransactionsID = uuidv4();
         transaction.UserID = uuidv4();
         transaction.UserName = 'dom testname';
         transaction.StoreID = cart[0].StoreID !== undefined ? cart[0].StoreID : uuidv4();
@@ -62,9 +49,7 @@ const Cart = () => {
         transaction.CreatedDate = new Date().toISOString();
         transaction.UpdatedDate = new Date().toISOString();
         transaction.TransactionStatus = TransactionStatus.Active;
-        
         transaction.ProductList = JSON.stringify(cart.map(product => {
-
             const prod = new Product();
             prod.ProductID = product.ProductID;
             prod.StoreID = product.StoreID;
@@ -75,15 +60,22 @@ const Cart = () => {
             prod.CreatedAt = product.CreatedAt;
             prod.UpdatedAt = product.UpdatedAt;
             prod.IsDeleted = product.IsDeleted;
-
             return prod;
         }));
+      
+
+        await createTransaction(transaction).then(result => {
+          if(result.ok){
+            setModalOpen(true);
+            NotificationService({isOpen: isModalOpen, onClose: closeModal, children: "Transaction Created Successfully!"})
+          
+          }else{
+            setModalOpen(true);
+            NotificationService({isOpen: isModalOpen, onClose: closeModal, children: "Error contact support!"})
        
-        await createTransaction(createTransactionUrl, transaction).then(o => {
-          debugger
-            NotificationService.success('Transaction created successfully');
-        }).catch(err => {
-            console.error(err);
+            console.log('Error creating transaction');
+          }
+          
         }
         )
     }
@@ -93,9 +85,13 @@ const Cart = () => {
     }
 
     return (
+        
         <div className="p-4">
             <h1 className="text-2xl mb-4">Shopping cart...</h1>
             <div className="overflow-x-auto">
+            {
+          <NotificationService isOpen={isModalOpen} onClose={closeModal} children={"Compra Exitosa!"}></NotificationService>
+            }
                 <table className="min-w-full bg-white">
                     <thead>
                         <tr>
@@ -140,7 +136,7 @@ const Cart = () => {
                             <td colSpan="4" className="px-6 py-4 text-right font-bold">Total</td>
                             <td className="px-6 py-4 border-t border-gray-300 text-lg font-bold">${grandTotal.toFixed(2)}</td>
                             <td> <button
-                      onClick={() => handleCheckout(cart)}
+                      onClick={() => HandleCheckout(cart)}
                       className="px-2 py-1 text-white bg-green-500 rounded hover:bg-green-700 mr-2"
                     >
                       Checkout
