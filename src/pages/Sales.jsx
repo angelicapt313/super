@@ -59,11 +59,18 @@ const Sales = () => {
       try {
         
         await instance.initialize();
-
-        const response = await getTransactions(process.env.REACT_APP_getTransactions);
-          
-        setSales(response);
-
+        
+        await getTransactions(process.env.REACT_APP_getTransactions).then(response => {
+          if (response.ok) {
+            return response.body.getReader().read().then(function (result) {
+              var decoder = new TextDecoder();
+              var string = decoder.decode(result.value);
+              sessionStorage.setItem("salesList", string);
+              setSales(JSON.parse(string));
+            });
+        }});
+     
+      
       } catch (error) {
           console.error('Error fetching products:', error);
       }
