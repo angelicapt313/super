@@ -3,13 +3,27 @@ import DashboardSideMenu from "./DashboardSideMenu";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../authConfig";
 import { getTransactions } from '../components/ApiCalls';
+import ProductDetailSideMenu from '../quickStoreDashboard/ProductDetailSideMenu';
 
 const Sales = () => {
+  
   const [sales, setSales] = useState([]);
   //const [storeID, getStoreID] = useState([]);
 
+// Estado para el producto seleccionado
+  const [selectedSale, setSelectedSale] = useState(null); 
+
   const { instance, accounts } = useMsal();
   //const [userRoles, setUserRoles] = useState(null);
+
+  
+  const handleRowClick = (producto) => {
+    setSelectedSale(producto); // Guardar producto seleccionado
+  };
+
+  const closeDetalle = () => {
+    setSelectedSale(null); // Cerrar detalle
+  };
    
      useEffect(() => {
         const initialize = async () => {
@@ -81,7 +95,10 @@ const Sales = () => {
         <tbody>
         {
           sales.map((sale, index) => (
-            <tr key={index}>
+            <tr key={index}
+            onClick={() => handleRowClick(sale)} // Manejar clic en la fila
+              className="cursor-pointer hover:bg-gray-200"
+            >
               <td className="py-2 px-4 border-b">{sale.TransactionsID}</td>
               <td className="py-2 px-4 border-b">{sale.StoreName}</td>
               <td className="py-2 px-4 border-b">{sale.UserName}</td>
@@ -93,6 +110,15 @@ const Sales = () => {
         }
         </tbody>
       </table>
+
+      {/* Mostrar detalle si hay un producto seleccionado */}
+      {selectedSale && (
+        <ProductDetailSideMenu 
+          sale={selectedSale}
+          onClose={closeDetalle} // Prop para cerrar el detalle
+        />
+      )}
+
     </div>
       </div>
       
