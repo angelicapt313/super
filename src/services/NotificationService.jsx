@@ -1,6 +1,7 @@
 import React from 'react';
 
 const notificationService = ({ isOpen, onClose, children }) => {
+  
   if (!isOpen) return null;
     
   return (

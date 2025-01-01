@@ -1,7 +1,7 @@
-import { postData } from "./ApiCalls";
 
 const fetchWithAuth = async (apiUrl, url, options = {}) => {
   
+
   const token = localStorage.getItem("AccessToken");
   
   const headers = {
@@ -24,8 +24,9 @@ const fetchWithAuth = async (apiUrl, url, options = {}) => {
     throw new Error(error.message);
   }
   
-  return response.json();
+  return response;
 };
 
 
 export default fetchWithAuth;
+
