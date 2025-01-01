@@ -1,22 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { CartContext } from '../CartContext';
-import {createTransaction} from './ApiCalls'
-import NotificationService from '../services/NotificationService';
+import { CartContext } from '../CartContext.js';
+import {createTransaction} from './ApiCalls.jsx'
+import NotificationService from '../services/NotificationService.jsx';
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../authConfig";
+import { loginRequest } from "../authConfig.js";
 import {Transactions, Product} from '../Models/Models.js';
 import { v4 as uuidv4 } from 'uuid';
 import { TransactionStatus } from '../Models/TransactionStatus.ts';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
     const closeModal = () => setModalOpen(false);
     const [isModalOpen, setModalOpen] = useState(false);
-    const { cart, removeFromCart } = useContext(CartContext);
+    const { cart, removeFromCart, cleanCart } = useContext(CartContext);
     
     const grandTotal = cart.reduce((acc, product) => acc + product.Price * product.quantityAdded, 0);
     
     const { instance, accounts } = useMsal();
-
+    const navigate = useNavigate();
+    
     // useEffect(() => {
         
     //     if (accounts.length > 0) {
@@ -68,14 +70,16 @@ const Cart = () => {
           if(result.ok){
             setModalOpen(true);
             NotificationService({isOpen: isModalOpen, onClose: closeModal, children: "Transaction Created Successfully!"})
-          
+            setTimeout(() => {
+                cleanCart(); // Clear the cart
+                navigate('/');
+            }, 3000);
           }else{
             setModalOpen(true);
             NotificationService({isOpen: isModalOpen, onClose: closeModal, children: "Error contact support!"})
        
-            console.log('Error creating transaction');
           }
-          
+         
         }
         )
     }

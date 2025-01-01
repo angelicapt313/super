@@ -4,6 +4,7 @@ import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../authConfig";
 import { getTransactions } from '../components/ApiCalls';
 import ProductDetailSideMenu from '../quickStoreDashboard/ProductDetailSideMenu';
+import SideMenu from "../quickStoreDashboard/SideMenu";
 
 const Sales = () => {
   

@@ -1,3 +1,4 @@
+import DashboardSideMenu from '../pages/DashboardSideMenu';
 import CreateStore from './CreateStore';
 import CreateUser from './CreateUser';
 import SideMenu from './SideMenu';
@@ -7,7 +8,7 @@ const quickStoreDashboard = () => {
 
 return(
     <div className="flex min-h-screen">
-    <SideMenu></SideMenu>
+    <DashboardSideMenu></DashboardSideMenu>
 
     <div className="container mx-auto ">
      
