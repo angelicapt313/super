@@ -18,14 +18,22 @@ const Inventory = () => {
         try {
             
             if(!sessionStorage.getItem("productList")){
+                
                 var prodList = await getData(process.env.REACT_APP_getProducts);
-                sessionStorage.setItem("productList",  JSON.stringify(prodList));
-                setProducts(prodList);
+
+                 prodList.body.getReader().read().then(function (result) {
+                    //console.log(JSON.parse(result.value));
+                    var decoder = new TextDecoder();
+                    var string = decoder.decode(result.value);
+                    sessionStorage.setItem("productList", string);
+                    setProducts(JSON.parse(string));
+                  });
                
               }else{
               
                 var cachedProducts = sessionStorage.getItem("productList");
-      
+                
+
                 setProducts(JSON.parse(cachedProducts));
               }
            

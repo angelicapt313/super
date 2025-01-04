@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
-import { v4 as uuidv4 } from 'uuid';
 
-export class Product {
-  ProductID = uuidv4().toString();
-  StoreID = "";
+export class ProductUpload {
   ProductName = "";
-  ProductDescription = "";
-  ProductPrice = 0;
-  ProductQuantity = 0;
-  ProductDiscount = 0;
-  ProductImageName = "";
-  isDeleted = false;
-      
+  Description = "";
+  Price = 0.00;
+  StockQuantity = 0;
 }
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
-  const [payload, createPayload] = useState([]);
+  let payload = [];
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+  };
+
+  const getStoreID = () => {
+    return localStorage.getItem('storeID');
   };
 
   const handleUpload = async () => {
@@ -28,31 +25,51 @@ const FileUpload = () => {
       alert('Please select a file first.');
       return;
     }
- 
     
     Papa.parse(file, {
       header: true,
-      complete: async (results) => {
+      complete: async (parsedCSV) => {
         
-        createPayload(results.data);
+
+        let cleanData = parsedCSV.data.map((product) => {
+          // Remove unwanted fields and convert Price to a number
+          let cleanedProduct = Object.keys(product)
+            .filter(key => key && !key.startsWith('_'))
+            .reduce((obj, key) => {
+
+              if(obj[key] = key === 'Price'){
+                obj[key] = key === 'Price' ? parseFloat(product[key]) : product[key];
+              
+              }else  if(obj[key] = key === 'StoreId'){
+                obj[key] = key === 'StoreId' ? getStoreID() : product[key];
+              
+              }
+              else if(obj[key] = key === 'StockQuantity'){
+              obj[key] = key === 'StockQuantity' ? parseInt(product[key]) : product[key];
+                
+              } else {
+              obj[key] = product[key];
+            }
+              return obj;
+             
+            }, {});
+
+           
+          return cleanedProduct;
+        }).filter((product) => product.ProductName !== '');
+
+        payload = JSON.stringify(cleanData);
         
-        const response = await fetch(process.env.REACT_APP_uploadCSV, {
+        let res = await fetch(process.env.REACT_APP_uploadCSV, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify<Product>(payload)
+          body: payload
         });
-
-        if (response.ok) {
-          alert('File uploaded successfully!');
-          
-        } else {
-          alert('Failed to upload file.');
-          
-        }
       }
     });
+
   };
 
   return (

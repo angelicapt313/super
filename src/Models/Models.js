@@ -40,3 +40,13 @@ export class Transactions {
     CartCreatedDate = ""
     CartFullfilledDate = ""
   }
+
+  export class User{
+    UserID = ""
+    StoreID = ""
+    Username = ""
+    Email = ""
+    Role = ""
+    CreatedAt = ""
+    UpdatedAt = ""
+  }

@@ -1,5 +1,5 @@
 import fetchWithAuth from './RequestService';
-import { Store } from '../Models/Models';
+import { User } from '../Models/Models';
 
 const createTransactionUrl = process.env.REACT_APP_createTransaction;
 
@@ -13,6 +13,7 @@ export const getData = async (apiUrl) => {
     throw error;
   }
 };
+
 
 export const getDataAsJson = async (apiUrl, options = {}) => {
   try {
@@ -124,18 +125,33 @@ export const createTransaction = async (transaction) => {
   }
 };
 
-export const getStoreInfo = async () => {
+export const getUserInfo = async (userName) => {
   try {
-      var store = new Store();
-      store.StoreID =  "0c7e7b2f-a856-4fde-a655-678b7763b412";
     
-      const response = await getTransactions(process.env.REACT_APP_getTransactions, store);
-      
-      return response;
+      await fetch(process.env.REACT_APP_getUser, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': 'true',
+        },
+        body: userName,
+      }).then(response => {
+        
+        if (response.ok) {
+          return response.body.getReader().read().then(function (result) {
+            debugger
+            var decoder = new TextDecoder();
+            var string = decoder.decode<User>(result.value);
+            userName = JSON.parse(string);
+          });
+        }
+
+      });
   } catch (error) {
       console.error('Error fetching products:', error);
   }
 };
+
 
 export const getTransactions = async (apiUrl, data) => {
   try {
