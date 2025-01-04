@@ -5,37 +5,35 @@ import iconUser from '../assets/images/iconUser.png';
 import { getUserInfo } from './ApiCalls';
 
 
-const getUser = async (userID) => {
-    
-    await getUserInfo(userID)
-};
-
 const LoginButton = () => {
     
     const { instance } = useMsal();
     const [user, setUser] = useState("");
-    const [store, setStore] = useState("");
-    const [token, setToken] = useState("");
-
     const handleLogin = async() => {
-       
-        instance.loginPopup(loginRequest)
-        .then( r => {
-            
-            
-            setUser(r.account.username);
-            setToken(r.accessToken);
-           
-            setStore(getUser(r.account.username));
-            sessionStorage.setItem("UserName", user);
-            sessionStorage.setItem("AccessToken", token)
-            sessionStorage.setItem("StoreID", store);
-            
-        })
         
-        .catch(e => {
-            console.error(e);
-        });
+        // First async function call
+        const loginResponse = await instance.loginPopup(loginRequest);
+        
+        // Check if login was successful
+        if (loginResponse) {
+            var userInfo;
+            sessionStorage.setItem("token", loginResponse.accessToken);
+
+          // Second async function call that depends on the result of the first
+          await getUserInfo(loginResponse.account.username).then((response) => {
+              response.body.getReader().read().then((data) => {
+                var decoder = new TextDecoder();
+                var string = decoder.decode(data.value);
+                userInfo = JSON.parse(string);
+                setUser(userInfo.Username);
+                sessionStorage.setItem("user", userInfo.Username);
+                sessionStorage.setItem("store", userInfo.StoreID);
+                
+             });
+          });
+          
+          
+        }
     };
 
     return <button className='rounded-full p-1' style={{ backgroundColor: "#fde3b2", width: "65px" }} 

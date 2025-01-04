@@ -128,25 +128,14 @@ export const createTransaction = async (transaction) => {
 export const getUserInfo = async (userName) => {
   try {
     
-      await fetch(process.env.REACT_APP_getUser, {
+    return await fetch(process.env.REACT_APP_getUser, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Credentials': 'true',
         },
         body: userName,
-      }).then(response => {
-        
-        if (response.ok) {
-          return response.body.getReader().read().then(function (result) {
-            debugger
-            var decoder = new TextDecoder();
-            var string = decoder.decode<User>(result.value);
-            userName = JSON.parse(string);
-          });
-        }
-
-      });
+      })
   } catch (error) {
       console.error('Error fetching products:', error);
   }
