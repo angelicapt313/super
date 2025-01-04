@@ -17,7 +17,7 @@ const FileUpload = () => {
   };
 
   const getStoreID = () => {
-    return localStorage.getItem('storeID');
+    return sessionStorage.getItem('store');
   };
 
   const handleUpload = async () => {
@@ -40,9 +40,6 @@ const FileUpload = () => {
               if(obj[key] = key === 'Price'){
                 obj[key] = key === 'Price' ? parseFloat(product[key]) : product[key];
               
-              }else  if(obj[key] = key === 'StoreId'){
-                obj[key] = key === 'StoreId' ? getStoreID() : product[key];
-              
               }
               else if(obj[key] = key === 'StockQuantity'){
               obj[key] = key === 'StockQuantity' ? parseInt(product[key]) : product[key];
@@ -54,12 +51,16 @@ const FileUpload = () => {
              
             }, {});
 
-           
+           debugger
           return cleanedProduct;
         }).filter((product) => product.ProductName !== '');
 
-        payload = JSON.stringify(cleanData);
-        
+        cleanData.map((product) => {
+          product.StoreID = getStoreID();
+          return product;
+       
+      });
+      payload = JSON.stringify(cleanData);
         let res = await fetch(process.env.REACT_APP_uploadCSV, {
           method: 'POST',
           headers: {

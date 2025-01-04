@@ -8,7 +8,7 @@ export const msalConfig = {
         redirectUri: process.env.REACT_APP_redirectUri
     },
     cache: {
-        cacheLocation: "localStorage",
+        cacheLocation: "sessionStorage",
         storeAuthStateInCookie: true
     }
 };
