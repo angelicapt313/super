@@ -29,8 +29,6 @@ const FileUpload = () => {
     Papa.parse(file, {
       header: true,
       complete: async (parsedCSV) => {
-        
-
         let cleanData = parsedCSV.data.map((product) => {
           // Remove unwanted fields and convert Price to a number
           let cleanedProduct = Object.keys(product)
@@ -50,8 +48,6 @@ const FileUpload = () => {
               return obj;
              
             }, {});
-
-           debugger
           return cleanedProduct;
         }).filter((product) => product.ProductName !== '');
 
@@ -60,6 +56,7 @@ const FileUpload = () => {
           return product;
        
       });
+
       payload = JSON.stringify(cleanData);
         let res = await fetch(process.env.REACT_APP_uploadCSV, {
           method: 'POST',

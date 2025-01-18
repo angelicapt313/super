@@ -29,7 +29,7 @@ const ProtectedPage = () => {
         return <div>Loading...</div>;
     }
 
-    return "Proected View";
+    return "Protected View";
 };
 
 export default ProtectedPage;

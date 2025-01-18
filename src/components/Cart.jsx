@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { CartContext } from '../CartContext.js';
+import { AuthContext } from '../context/AuthContext.js';
 import {createTransaction} from './ApiCalls.jsx'
 import NotificationService from '../services/NotificationService.jsx';
-import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../authConfig.js";
 import {Transactions, Product} from '../Models/Models.js';
 import { v4 as uuidv4 } from 'uuid';
 import { TransactionStatus } from '../Models/TransactionStatus.ts';
@@ -13,38 +12,17 @@ const Cart = () => {
     const closeModal = () => setModalOpen(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const { cart, removeFromCart, cleanCart } = useContext(CartContext);
-    
+    const {user, login, logout} = useContext(AuthContext);
     const grandTotal = cart.reduce((acc, product) => acc + product.Price * product.quantityAdded, 0);
-    
-    const { instance, accounts } = useMsal();
+    const a = user;
+    const v = login;
+    const b = logout;
     const navigate = useNavigate();
     
-    // useEffect(() => {
-        
-    //     if (accounts.length > 0) {
-
-    //         instance.acquireTokenSilent({
-    //             ...loginRequest,
-    //             account: accounts[0]
-    //         }).then(response => {
-                
-    //             //console.log(response);
-              
-                
-    //         }).catch(err => {
-                
-    //             console.error(err);
-                
-    //         });
-    //     }
-    // }, [accounts, instance]);
-
-
-   
     const HandleCheckout = async (cart) =>  {
         const transaction = new Transactions()
         transaction.UserID = uuidv4();
-        transaction.UserName = 'dom testname';
+        transaction.UserName = "diego";
         transaction.StoreID = cart[0].StoreID !== undefined ? cart[0].StoreID : uuidv4();
         transaction.StoreName = cart[0].StoreName !== undefined ? cart[0].StoreName : 'test Store Name';
         transaction.OrderID = uuidv4();
@@ -71,7 +49,7 @@ const Cart = () => {
             setModalOpen(true);
             NotificationService({isOpen: isModalOpen, onClose: closeModal, children: "Transaction Created Successfully!"})
             setTimeout(() => {
-                cleanCart(); // Clear the cart
+                cleanCart();
                 navigate('/');
             }, 3000);
           }else{

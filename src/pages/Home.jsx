@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import file from '../assets/images/file.png'
 import '../styles/Home.css'
+import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
+    const { user } = useContext(AuthContext);
+      
     return (
         <div className="content h-screen flex justify-center items-center">
             <div className="info-content flex flex-col lg:flex-row justify-center items-center ">
@@ -15,9 +18,12 @@ const Home = () => {
                     <Link to="/products">
                         <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Ver Productos</button>
                     </Link>
-                    <Link to="/dashboarduser">
-                        <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">DashBoard</button>
-                    </Link>
+                    {
+                        user != null ?   <Link to="/dashboarduser">
+                        <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Dashboard</button>
+                      </Link> : <p></p>
+                        
+                    }
                 </div>
 
                 <div className="image-content">
