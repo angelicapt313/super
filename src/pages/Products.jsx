@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import NotificationService from '../services/NotificationService';
+import { msalInstance } from '../authConfig';
 
 const Products = () => {
 
@@ -10,13 +11,11 @@ const Products = () => {
   const [searchProduct, setSearchProduct] = useState("");
   const closeModal = () => setModalOpen(false);
 
-  const filteredProducts = productos.filter(product => {
-    return product;
-  });
+  const filteredProducts = productos.filter(product =>
+     product.ProductName.toLowerCase().includes(searchProduct.toLowerCase()));
 
  async function fetchProducts() {
     try {
-
       if (sessionStorage.getItem("productList")) {
 
         var cachedProducts = sessionStorage.getItem("productList");
@@ -24,9 +23,7 @@ const Products = () => {
         setProductos(JSON.parse(cachedProducts));
 
       } else {
-
         await getProducts();
-       
       }
 
     } catch (error) {
@@ -38,37 +35,38 @@ const Products = () => {
 
   async function getProducts() {
     
-      const token = localStorage.getItem("AccessToken");
-
-       const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Credentials': 'true'
-    };
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
+    const apiUrl = process.env.REACT_APP_getProducts;
    
-    await fetch(process.env.REACT_APP_getProducts, {
-      method: 'GET',
-      headers: headers
-    }).then(response => {
-      
-      if (response.ok) {
-        return response.body.getReader().read().then(function (result) {
-          //console.log(JSON.parse(result.value));
-          var decoder = new TextDecoder();
-          var string = decoder.decode(result.value);
-          sessionStorage.setItem("productList", string);
-          setProductos(JSON.parse(string));
-        });
-      }
+    await msalInstance.initialize();
+    
+    const account = msalInstance.getActiveAccount();
 
-    }).finally(() => {
-      console.log("Product List Loaded");
+    if (account.length === 0) {
+      throw new Error('No accounts found. Please log in.');
+    }
+
+    const tokenResponse = await msalInstance.acquireTokenSilent({
+      scopes: [process.env.REACT_APP_scope],
+      account: account[0]
     });
 
-  }
+    const response = await fetch(apiUrl, {
+      method: 'Get',
+      headers: {
+        'Authorization': 'Bearer ' + tokenResponse.accessToken,
+        'Content-Type': 'application/json',
+        'x-ms-date': new Date().toUTCString(),
+      },
+      credentials: 'include'  
+    });
+
+    if(response.ok){
+   
+      var products =  await response.json();
+      sessionStorage.setItem("productList", JSON.stringify(products));
+      setProductos(products);
+    
+  }}
 
   useEffect(() => {
     fetchProducts();
@@ -104,4 +102,5 @@ const Products = () => {
   )
 
 };
+
 export default Products;

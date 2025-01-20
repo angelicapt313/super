@@ -1,7 +1,7 @@
 
  export const postWithAuth = async (apiUrl,data, options = {}) => {
    
-    const token = localStorage.getItem("AccessToken");
+    const token = '';
     
     const headers = {
         'Content-Type': 'application/json',

@@ -29,7 +29,7 @@ const Sales = () => {
      useEffect(() => {
         const initialize = async () => {
             await setAuthentication();
-            await fetchSales();
+            await GetSales();
         };
         initialize();
   }, [accounts, instance]);
@@ -46,8 +46,8 @@ const Sales = () => {
              account: accounts[0]
          }).then(response => {
            
-           localStorage.setItem("token", response.accessToken);
-           localStorage.setItem("userRoles", response.idTokenClaims.roles)
+          //  localStorage.setItem("token", response.accessToken);
+          //  localStorage.setItem("userRoles", response.idTokenClaims.roles)
              
          })
      }
@@ -56,22 +56,40 @@ const Sales = () => {
   }
    
   };
-  const fetchSales = async () => {
+  async function GetSales () {
       try {
         
         await instance.initialize();
-        
-        await getTransactions(process.env.REACT_APP_getTransactions).then(response => {
-          if (response.ok) {
-            return response.body.getReader().read().then(function (result) {
-              var decoder = new TextDecoder();
-              var string = decoder.decode(result.value);
-              sessionStorage.setItem("salesList", string);
-              setSales(JSON.parse(string));
-            });
-        }});
-     
-      
+        const account = instance.getActiveAccount();
+    
+        if (account.length === 0) {
+          throw new Error('No accounts found. Please log in.');
+        }
+    
+        const tokenResponse = await instance.acquireTokenSilent({
+          scopes: [process.env.REACT_APP_scope],
+          account: account[0]
+        });
+
+        const apiUrl = process.env.REACT_APP_getTransactions;
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + tokenResponse.accessToken,
+            'Content-Type': 'application/json',
+            'x-ms-date': new Date().toUTCString(),
+          },
+          credentials: 'include'  
+        });
+    
+       
+        if(response.ok){
+          var sales =  await response.json();
+          setSales(sales);
+        }
+
+
       } catch (error) {
           console.error('Error fetching products:', error);
       }

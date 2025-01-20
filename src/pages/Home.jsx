@@ -19,7 +19,7 @@ const Home = () => {
                         <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Ver Productos</button>
                     </Link>
                     {
-                        user != null ?   <Link to="/dashboarduser">
+                        user != null ?   <Link to="/dashboard">
                         <button className="products animate-bounce text-white m-3 px-4 py-2 rounded-3xl">Dashboard</button>
                       </Link> : <p></p>
                         

@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import Cart from './components/Cart';
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
-import { loginRequest, msalInstance } from './authConfig';
+import { loginRequest } from './authConfig';
 import ProtectedPage from './components/ProtectedPage';
 import DashboardUser from './pages/DashboardUser';
 import Reports from './pages/Reports';
@@ -41,7 +41,7 @@ function App() {
               path="/dashboarduser" 
               element={
                 <MsalAuthenticationTemplate interactionType="popup" authenticationRequest={loginRequest}>
-                  <QuickStoreDashboard/>
+                  <DashboardUser />
                 </MsalAuthenticationTemplate>
               } 
             />

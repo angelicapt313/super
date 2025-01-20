@@ -20,8 +20,8 @@ const DashboardUser = () => {
                 account: accounts[0]
             }).then(response => {
                 
-                localStorage.setItem("token", response.accessToken);
-                localStorage.setItem("userRoles", response.idTokenClaims.roles)
+                // localStorage.setItem("token", response.accessToken);
+                // localStorage.setItem("userRoles", response.idTokenClaims.roles)
 
                 setUserRoles(response.idTokenClaims.roles);
 

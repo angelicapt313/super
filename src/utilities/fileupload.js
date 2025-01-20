@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
+import {msalInstance} from '../authConfig';
 
 export class ProductUpload {
   ProductName = "";
@@ -8,7 +9,10 @@ export class ProductUpload {
   StockQuantity = 0;
 }
 
-const FileUpload = () => {
+const FileUpload = async () => {
+
+  const instance = await msalInstance();
+
   const [file, setFile] = useState(null);
   let payload = [];
 
@@ -18,6 +22,10 @@ const FileUpload = () => {
 
   const getStoreID = () => {
     return sessionStorage.getItem('store');
+  };
+
+  const isValidProduct = (product) => {
+    return product.ProductName && product.Description && !isNaN(product.Price) && !isNaN(product.StockQuantity);
   };
 
   const handleUpload = async () => {
@@ -34,47 +42,63 @@ const FileUpload = () => {
           let cleanedProduct = Object.keys(product)
             .filter(key => key && !key.startsWith('_'))
             .reduce((obj, key) => {
-
-              if(obj[key] = key === 'Price'){
-                obj[key] = key === 'Price' ? parseFloat(product[key]) : product[key];
-              
-              }
-              else if(obj[key] = key === 'StockQuantity'){
-              obj[key] = key === 'StockQuantity' ? parseInt(product[key]) : product[key];
-                
+              if (key === 'Price') {
+                obj[key] = parseFloat(product[key]);
+              } else if (key === 'StockQuantity') {
+                obj[key] = parseInt(product[key]);
               } else {
-              obj[key] = product[key];
-            }
+                obj[key] = product[key];
+              }
               return obj;
-             
             }, {});
           return cleanedProduct;
-        }).filter((product) => product.ProductName !== '');
+        }).filter((product) => product.ProductName !== '' && isValidProduct(product));
 
         cleanData.map((product) => {
           product.StoreID = getStoreID();
           return product;
-       
-      });
+        });
 
-      payload = JSON.stringify(cleanData);
-        let res = await fetch(process.env.REACT_APP_uploadCSV, {
+        await instance.initialize();
+        const account = instance.getActiveAccount();
+    
+        if (account.length === 0) {
+          throw new Error('No accounts found. Please log in.');
+        }
+    
+        const tokenResponse = await instance.acquireTokenSilent({
+          scopes: [process.env.REACT_APP_scope],
+          account: account[0]
+        });
+
+        const apiUrl = process.env.REACT_APP_uploadCSV;
+
+        payload = JSON.stringify(cleanData);
+      
+        const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Authorization': 'Bearer ' + tokenResponse.accessToken,
+            'Content-Type': 'application/json',
+            'x-ms-date': new Date().toUTCString(),
           },
-          body: payload
+          body: payload,
+          credentials: 'include'  
         });
+    
+       
+        if(response.ok){
+          alert('File uploaded successfully');
+        }
+
       }
     });
 
   };
 
   return (
-    
     <div className="flex grid-cols-3">
       <input type="file" accept=".csv" onChange={handleFileChange} />
-    
       <button className='px-2 py-1 text-white bg-green-500 rounded hover:bg-green-700 mr-2' onClick={handleUpload}>Upload</button>
     </div>
   );

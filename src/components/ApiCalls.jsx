@@ -1,12 +1,31 @@
 import fetchWithAuth from './RequestService';
-import { getToken } from '../utils/authUtils';
+import { msalInstance } from '../authConfig';
 
 const createTransactionUrl = process.env.REACT_APP_createTransaction;
 
 export const getData = async (apiUrl) => {
   try {
-    const data = await fetchWithAuth(apiUrl, '/data');
-    return data;
+    await msalInstance.initialize();
+
+    const token = msalInstance.getActiveAccount().idToken;
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Credentials':'true'
+    };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    var response = await fetch(apiUrl, {
+      ...headers,
+      withCredentials: true,
+    }).then((response) => {
+      debugger
+      return response.json();
+    });
+
   } catch (error) {
     console.error('Error fetching data', error);
     throw error;
@@ -15,7 +34,7 @@ export const getData = async (apiUrl) => {
 
 export const getDataAsJson = async (apiUrl, options = {}) => {
   try {
-    const token = localStorage.getItem("AccessToken");
+    const token = "";
 
     if (!options.body) {
       options.body = '/data';
@@ -64,7 +83,9 @@ export const postData = async (apiUrl, data) => {
 
 export const checkOutSession = async (apiUrl, data) => {
   try {
-    const token = await getToken();
+     await msalInstance.initialize();
+
+    const token = msalInstance.getActiveAccount().idToken;
 
     const headers = {
       'Content-Type': 'application/json',
@@ -90,7 +111,9 @@ export const checkOutSession = async (apiUrl, data) => {
 
 export const updateProduct = async (apiUrl, data) => {
   try {
-    const token = await getToken();
+    await msalInstance.initialize();
+
+    const token = msalInstance.getActiveAccount().idToken;
 
     const headers = {
       'Content-Type': 'application/json',
