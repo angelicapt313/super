@@ -243,11 +243,34 @@ export const getUserInfo = async (userName) => {
 };
 export const getTransactions = async (apiUrl, data) => {
   try {
+
     
-    const response = await fetchWithAuth(apiUrl, '/data', {
-      method: 'POST',
-      body: JSON.stringify(data),
+    await msalInstance.initialize();
+    
+    const account = msalInstance.getActiveAccount();
+
+    if (account.length === 0) {
+      throw new Error('No accounts found. Please log in.');
+    }
+
+    const tokenResponse = await msalInstance.acquireTokenSilent({
+      scopes: [process.env.REACT_APP_scope],
+      account: account[0]
     });
+    
+    const response = await fetch(apiUrl, {
+      method: 'post',
+      headers: {
+        'Authorization': 'Bearer ' + tokenResponse.accessToken,
+        'Content-Type': 'application/json',
+        'x-ms-date': new Date().toUTCString(),
+      },
+      credentials: 'include'  
+    });
+    
+    if(response.ok){
+    
+    }
     
     return response;
   } catch (error) {

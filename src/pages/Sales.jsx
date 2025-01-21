@@ -1,72 +1,38 @@
 import { React, useEffect, useState } from "react";
 import DashboardSideMenu from "./DashboardSideMenu";
-import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../authConfig";
-import { getTransactions } from '../components/ApiCalls';
+import { msalInstance } from '../authConfig';
 import ProductDetailSideMenu from '../quickStoreDashboard/ProductDetailSideMenu';
-import SideMenu from "../quickStoreDashboard/SideMenu";
-
+import Loading from '../components/Loading'; 
 const Sales = () => {
   
   const [sales, setSales] = useState([]);
-  //const [storeID, getStoreID] = useState([]);
 
-// Estado para el producto seleccionado
   const [selectedSale, setSelectedSale] = useState(null); 
-
-  const { instance, accounts } = useMsal();
-  //const [userRoles, setUserRoles] = useState(null);
-
-  
+  const [loading, setLoading] = useState(true);
+ 
   const handleRowClick = (producto) => {
-    setSelectedSale(producto); // Guardar producto seleccionado
+    setSelectedSale(producto);
   };
 
   const closeDetalle = () => {
-    setSelectedSale(null); // Cerrar detalle
+    setSelectedSale(null); 
   };
-   
-     useEffect(() => {
-        const initialize = async () => {
-            await setAuthentication();
-            await GetSales();
-        };
-        initialize();
-  }, [accounts, instance]);
-  
 
-  const setAuthentication = async () => { 
-  try {
-    if (accounts.length > 0) {
+ useEffect(() => {
+    GetSales();
+ }, []);
 
-      await instance.initialize();
-
-         instance.acquireTokenSilent({
-             ...loginRequest,
-             account: accounts[0]
-         }).then(response => {
-           
-          //  localStorage.setItem("token", response.accessToken);
-          //  localStorage.setItem("userRoles", response.idTokenClaims.roles)
-             
-         })
-     }
-  } catch (error) {
-      console.log(error);
-  }
-   
-  };
   async function GetSales () {
       try {
         
-        await instance.initialize();
-        const account = instance.getActiveAccount();
+        await msalInstance.initialize();
+        const account = msalInstance.getActiveAccount();
     
         if (account.length === 0) {
           throw new Error('No accounts found. Please log in.');
         }
     
-        const tokenResponse = await instance.acquireTokenSilent({
+        const tokenResponse = await msalInstance.acquireTokenSilent({
           scopes: [process.env.REACT_APP_scope],
           account: account[0]
         });
@@ -118,7 +84,7 @@ const Sales = () => {
           </tr>
         </thead>
         <tbody>
-        {
+        {loading &&
           sales.map((sale, index) => (
             <tr key={index}
             onClick={() => handleRowClick(sale)} // Manejar clic en la fila

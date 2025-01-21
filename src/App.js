@@ -7,14 +7,12 @@ import Cart from './components/Cart';
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
 import { loginRequest } from './authConfig';
 import ProtectedPage from './components/ProtectedPage';
-import DashboardUser from './pages/DashboardUser';
 import Dashboard from './quickStoreDashboard/Dashboard';
 import Reports from './pages/Reports';
 import Upload from './pages/Upload';
 import Inventory from './pages/Inventory';
 import Sales from './pages/Sales';
 
-import QuickStoreDashboard from './quickStoreDashboard/Dashboard';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {

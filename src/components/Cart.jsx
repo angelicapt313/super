@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { CartContext } from '../CartContext.js';
-import { AuthContext } from '../context/AuthContext.js';
 import {createTransaction} from './ApiCalls.jsx'
 import NotificationService from '../services/NotificationService.jsx';
 import {Transactions, Product} from '../Models/Models.js';
@@ -12,11 +11,8 @@ const Cart = () => {
     const closeModal = () => setModalOpen(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const { cart, removeFromCart, cleanCart } = useContext(CartContext);
-    const {user, login, logout} = useContext(AuthContext);
     const grandTotal = cart.reduce((acc, product) => acc + product.Price * product.quantityAdded, 0);
-    const a = user;
-    const v = login;
-    const b = logout;
+ 
     const navigate = useNavigate();
     
     const HandleCheckout = async (cart) =>  {

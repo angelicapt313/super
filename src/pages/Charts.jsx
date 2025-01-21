@@ -1,22 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-
+import { getTransactions } from '../components/ApiCalls'; // Assuming getData is imported from an api file
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+const Charts = () => {
+  const [chartData, setChartData] = useState({
+    labels: [],
     datasets: [
       {
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
+        label: 'Sales Data',
+        data: [],
         fill: false,
         backgroundColor: 'rgb(75, 192, 192)',
         borderColor: 'rgba(75, 192, 192, 0.2)',
       },
     ],
-  };
-  
+  });
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await getTransactions(process.env.REACT_APP_getTransactions);
+        const data = await response.json();
+        debugger
+        setChartData({
+          labels: data.labels,
+          datasets: [
+            {
+              label: 'Sales Data',
+              data: data,
+              fill: false,
+              backgroundColor: 'rgb(75, 192, 192)',
+              borderColor: 'rgba(75, 192, 192, 0.2)',
+            },
+          ],
+        });
+      } catch (error) {
+        console.error('Error fetching sales data:', error);
+      }
+    };
+
+    fetchSalesData();
+  }, []);
+
   const options = {
     responsive: true,
     plugins: {
@@ -30,14 +57,11 @@ const data = {
     },
   };
 
-  
-  const Charts = () => {
-    return (
-      <div>
-        <Line data={data} options={options} />
-      </div>
-    );
-  };
-  
-  export default Charts;
-  
+  return (
+    <div>
+      <Line data={chartData} options={options} />
+    </div>
+  );
+};
+
+export default Charts;

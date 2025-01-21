@@ -30,7 +30,7 @@ const ProductDetailSideMenu = ({ sale, onClose }) => {
 
                                 <tr className="cursor-pointer hover:bg-gray-200">
                                     <td className="p-2 ">
-                                        <img src="https://www.svgrepo.com/show/210636/brackets.svg" className="w-6 inline m-1" />
+                                        <img src="https://www.svgrepo.com/show/210636/brackets.svg" className="w-6 inline m-1" alt="alternative text" />
                                         <p className="inline">{prod.ProductName}</p>
                                     </td>
 

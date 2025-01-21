@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import Pagination from '../utilities/pagination';
 import NotificationService from '../services/NotificationService';
 import { updateProduct,deleteProduct } from '../components/ApiCalls';
@@ -19,7 +19,6 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
 
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
   const handleEditClick = (product) => {
@@ -48,7 +47,7 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
     prod.Price = parseFloat(formData.Price);
     prod.StoreID = '4a6f661f-e8e8-498f-93dc-733c1cec8fe5';
     
-    debugger
+    
     await updateProduct(prod);
     reloadData();
   };
