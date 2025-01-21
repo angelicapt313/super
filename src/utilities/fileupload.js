@@ -9,9 +9,7 @@ export class ProductUpload {
   StockQuantity = 0;
 }
 
-const FileUpload = async () => {
-
-  const instance = await msalInstance();
+const FileUpload = () => {
 
   const [file, setFile] = useState(null);
   let payload = [];
@@ -46,27 +44,28 @@ const FileUpload = async () => {
                 obj[key] = parseFloat(product[key]);
               } else if (key === 'StockQuantity') {
                 obj[key] = parseInt(product[key]);
-              } else {
+              }
+              else {
                 obj[key] = product[key];
               }
               return obj;
             }, {});
           return cleanedProduct;
-        }).filter((product) => product.ProductName !== '' && isValidProduct(product));
+        }).filter((product) => isValidProduct(product));
 
         cleanData.map((product) => {
-          product.StoreID = getStoreID();
+          product.StoreID ="4a6f661f-e8e8-498f-93dc-733c1cec8fe5";
           return product;
         });
 
-        await instance.initialize();
-        const account = instance.getActiveAccount();
+        await msalInstance.initialize();
+        const account = msalInstance.getActiveAccount();
     
         if (account.length === 0) {
           throw new Error('No accounts found. Please log in.');
         }
     
-        const tokenResponse = await instance.acquireTokenSilent({
+        const tokenResponse = await msalInstance.acquireTokenSilent({
           scopes: [process.env.REACT_APP_scope],
           account: account[0]
         });

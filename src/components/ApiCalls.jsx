@@ -5,33 +5,45 @@ const createTransactionUrl = process.env.REACT_APP_createTransaction;
 
 export const getData = async (apiUrl) => {
   try {
+    debugger
     await msalInstance.initialize();
+    
+    const apiUrl = process.env.REACT_APP_getProducts;
+   
+    await msalInstance.initialize();
+    
+    const account = msalInstance.getActiveAccount();
 
-    const token = msalInstance.getActiveAccount().idToken;
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Credentials':'true'
-    };
-
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
+    if (account.length === 0) {
+      throw new Error('No accounts found. Please log in.');
     }
 
-    var response = await fetch(apiUrl, {
-      ...headers,
-      withCredentials: true,
-    }).then((response) => {
-      debugger
-      return response.json();
+    const tokenResponse = await msalInstance.acquireTokenSilent({
+      scopes: [process.env.REACT_APP_scope],
+      account: account[0]
     });
 
-  } catch (error) {
-    console.error('Error fetching data', error);
-    throw error;
-  }
-};
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + tokenResponse.accessToken,
+        'Content-Type': 'application/json',
+        'x-ms-date': new Date().toUTCString(),
+      },
+      credentials: 'include'  
+    });
 
+    if(response.ok){
+      alert('Product updated successfully');
+      return response.json();
+    }
+
+
+  } catch (error) {
+
+  }
+
+}
 export const getDataAsJson = async (apiUrl, options = {}) => {
   try {
     const token = "";
@@ -66,7 +78,6 @@ export const getDataAsJson = async (apiUrl, options = {}) => {
     throw error;
   }
 };
-
 export const postData = async (apiUrl, data) => {
   try {
     const response = await fetchWithAuth(apiUrl, '/data', {
@@ -80,7 +91,6 @@ export const postData = async (apiUrl, data) => {
     throw error;
   }
 };
-
 export const checkOutSession = async (apiUrl, data) => {
   try {
      await msalInstance.initialize();
@@ -108,35 +118,85 @@ export const checkOutSession = async (apiUrl, data) => {
     throw error;
   }
 };
-
-export const updateProduct = async (apiUrl, data) => {
+export const updateProduct = async (data) => {
   try {
     await msalInstance.initialize();
+    
+    const apiUrl = process.env.REACT_APP_updateProducts;
+   
+    await msalInstance.initialize();
+    
+    const account = msalInstance.getActiveAccount();
 
-    const token = msalInstance.getActiveAccount().idToken;
-
-    const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Credentials': 'true',
-    };
-
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    if (account.length === 0) {
+      throw new Error('No accounts found. Please log in.');
     }
 
-    const response = await fetchWithAuth(apiUrl, '/data', {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(data),
+    const tokenResponse = await msalInstance.acquireTokenSilent({
+      scopes: [process.env.REACT_APP_scope],
+      account: account[0]
     });
+    debugger
+    const response = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + tokenResponse.accessToken,
+        'Content-Type': 'application/json',
+        'x-ms-date': new Date().toUTCString(),
+      },
+      body: JSON.stringify(data),
+      credentials: 'include'  
+    });
+    debugger
+    if(response.ok){
+      alert('Product updated successfully');
+      
+    }
 
-    return response;
+  return response.json();
   } catch (error) {
-    console.error('Error posting data', error);
-    throw error;
+
   }
 };
+export const deleteProduct = async (productID) => {
+  try {
+  
+    const apiUrl = process.env.REACT_APP_deleteProduct;
+   
+    await msalInstance.initialize();
+    
+    const account = msalInstance.getActiveAccount();
 
+    if (account.length === 0) {
+      throw new Error('No accounts found. Please log in.');
+    }
+
+    const tokenResponse = await msalInstance.acquireTokenSilent({
+      scopes: [process.env.REACT_APP_scope],
+      account: account[0]
+    });
+    
+    const response = await fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + tokenResponse.accessToken,
+        'Content-Type': 'application/json',
+        'x-ms-date': new Date().toUTCString(),
+      },
+      body: productID,
+      credentials: 'include'  
+    });
+    
+    if(response.ok){
+      alert('Product updated successfully');
+      
+    }
+
+  return response.json();
+  } catch (error) {
+
+  }
+};
 export const createTransaction = async (transaction) => {
   try {
 
@@ -166,7 +226,6 @@ export const createTransaction = async (transaction) => {
     
   }
 };
-
 export const getUserInfo = async (userName) => {
   try {
     
@@ -182,8 +241,6 @@ export const getUserInfo = async (userName) => {
       console.error('Error fetching products:', error);
   }
 };
-
-
 export const getTransactions = async (apiUrl, data) => {
   try {
     
@@ -198,4 +255,3 @@ export const getTransactions = async (apiUrl, data) => {
     throw error;
   }
 };
-

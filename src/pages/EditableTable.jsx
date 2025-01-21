@@ -1,81 +1,76 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from '../utilities/pagination';
 import NotificationService from '../services/NotificationService';
-import { updateProduct } from '../components/ApiCalls';
+import { updateProduct,deleteProduct } from '../components/ApiCalls';
 import {Product }  from "../Models/Models.js"
-
 
 const EditableTable = ({ products, setProducts, reloadData }) => {
   
   const [editRowId, setEditRowId] = useState(null);
-  const [formData, setFormData] = useState({ ProductName: '', ProductPrice: '' });
+  const [formData, setFormData] = useState({ ProductName: '', Price: '', Description: '' });
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
    
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  
+  const currentItems = products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  
+
   const [isModalOpen, setModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-
   const handleEditClick = (product) => {
+    
     setEditRowId(product.ProductID);
     setFormData({ ProductName: product.ProductName, 
-      ProductPrice: product.Price, 
-      ProductDescription: product.Description });
+      Price: product.Price, 
+      Description: product.Description });
   };
 
 
-  const handleSaveClick = async (id) => {
+  const handleSaveClick = async (product) => {
     
-    setProducts(products.map(product => (product.ProductID === id ? { ...product, ...formData } : product)));
+    setProducts((prevProducts) =>
+      prevProducts.map((p) =>
+        p.ProductID === product.ProductID ? { ...p, ...formData } : p
+      )
+    );
     setEditRowId(null);
-    setFormData({ ProductName: '', ProductPrice: '' , ProductDescription: '', ProductImageName: '' });
+    setFormData({ ProductName: '', Price: '' , Description: '' });
 
     var prod = new Product();
-    prod.ProductID = id;
+    prod.ProductID = product.ProductID;
     prod.ProductName = formData.ProductName;
-    prod.ProductDescription = formData.Description;
-    prod.ProductPrice = formData.Price;
-    //prod.ProductDiscount = 0.0;
-    //prod.ProductImageName = formData.ProductImageName;
+    prod.Description = formData.Description;
+    prod.Price = parseFloat(formData.Price);
+    prod.StoreID = '4a6f661f-e8e8-498f-93dc-733c1cec8fe5';
     
-
-    await updateProduct(process.env.REACT_APP_updateProducts, prod);
+    debugger
+    await updateProduct(prod);
     reloadData();
-    openModal("Data Saved Succesfully");
   };
 
   const handleCancelClick = () => {
     setEditRowId(null);
-    setFormData({ ProductName: '', ProductPrice: '' });
+    setFormData({ ProductName: '', Price: '', Description: '' });
   };
 
   const handleInputChange = (e) => {
+    
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleDelete = async (id) => {
-    
-    var prod = new Product();
-    prod.ProductID = id;
-    prod.ProductName = formData.ProductName;
-    prod.ProductDescription = formData.Description;
-    prod.ProductPrice = formData.Price;
-    //prod.ProductDiscount = formData.ProductDiscount;
-    //prod.ProductImageName = formData.ProductImageName;
-    
-    await updateProduct(process.env.updateProduct, prod);
-
+    await deleteProduct(id);
+   
     reloadData();
-    openModal("Deleted Succesfully!")
   };
 
-  const totalPages = Math.ceil(products.length / itemsPerPage);
-  
-  const currentItems = products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-  
+ 
   return (
     <div className="p-4">
          <NotificationService isOpen={isModalOpen} onClose={closeModal} children={"Data Being Send From Parent"}></NotificationService>
@@ -83,9 +78,10 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
       <table className="min-w-full bg-white">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Image</th>
+            {/* <th className="py-2 px-4 border-b">Image</th> */}
             <th className="py-2 px-4 border-b">Name</th>
             <th className="py-2 px-4 border-b">Price</th>
+            <th className="py-2 px-4 border-b">Description</th>
             <th className="py-2 px-4 border-b">Actions</th>
           </tr>
         </thead>
@@ -112,11 +108,11 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
                 )}
               </td>
               <td className="py-2 px-4 border-b">
-                {editRowId === product.Price ? (
+                {editRowId === product.ProductID ? (
                   <input
                     type="number"
                     name="ProductPrice"
-                    value={formData.ProductPrice}
+                    value={formData.Price}
                     onChange={handleInputChange}
                     className="w-full px-2 py-1 border"
                   />
@@ -125,7 +121,7 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
                 )}
               </td>
               <td className="py-2 px-4 border-b">
-                {editRowId === product.Description ? (
+                {editRowId === product.ProductID ? (
                   <input
                     type="text"
                     name="ProductDescription"
@@ -134,14 +130,14 @@ const EditableTable = ({ products, setProducts, reloadData }) => {
                     className="w-full px-2 py-1 border"
                   />
                 ) : (
-                  product.ProductPrice
+                  product.Description
                 )}
               </td>
               <td className="py-2 px-4 border-b">
                 {editRowId === product.ProductID ? (
                   <>
                     <button
-                      onClick={() => handleSaveClick(product.ProductID)}
+                      onClick={() => handleSaveClick(product)}
                       className="px-2 py-1 text-white bg-green-500 rounded hover:bg-green-700 mr-2"
                     >
                       Save

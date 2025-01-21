@@ -9,7 +9,7 @@ const DashboardSideMenu = () => {
 
     return (
         <div className="w-64 bg-gray-800 text-white flex flex-col p-4">
-        <Link to="/dashboarduser">
+        <Link to="/dashboard">
         <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
         </Link>
         <div className="flex flex-col space-y-4">

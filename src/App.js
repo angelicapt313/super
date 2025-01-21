@@ -8,11 +8,10 @@ import { MsalAuthenticationTemplate } from '@azure/msal-react';
 import { loginRequest } from './authConfig';
 import ProtectedPage from './components/ProtectedPage';
 import DashboardUser from './pages/DashboardUser';
+import Dashboard from './quickStoreDashboard/Dashboard';
 import Reports from './pages/Reports';
 import Upload from './pages/Upload';
 import Inventory from './pages/Inventory';
-import Success from './components/Success';
-import Failure from './components/Failure';
 import Sales from './pages/Sales';
 
 import QuickStoreDashboard from './quickStoreDashboard/Dashboard';
@@ -33,15 +32,15 @@ function App() {
               path="/protected" 
               element={
                 <MsalAuthenticationTemplate interactionType="popup" authenticationRequest={loginRequest}>
-                  <ProtectedPage />
+                  <ProtectedPage/>
                 </MsalAuthenticationTemplate>
               } 
             />
             <Route 
-              path="/dashboarduser" 
+              path="/dashboard" 
               element={
                 <MsalAuthenticationTemplate interactionType="popup" authenticationRequest={loginRequest}>
-                  <DashboardUser />
+                  <Dashboard />
                 </MsalAuthenticationTemplate>
               } 
             />

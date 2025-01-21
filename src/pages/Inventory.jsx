@@ -1,79 +1,52 @@
-import DashboardSideMenu from "./DashboardSideMenu";
-import { React, useState, useEffect } from "react";
-import { getData } from '../components/ApiCalls';
+import React, { useState, useEffect } from 'react';
+import DashboardSideMenu from './DashboardSideMenu';
 import EditableTable from './EditableTable';
-
-
+import Loading from '../components/Loading';
+import { getData } from '../components/ApiCalls'; // Assuming getData is imported from an api file
 
 const Inventory = () => {
-   
     const [products, setProducts] = useState([]);
-  
-   
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-        fetchProducts();
+        setLoading(true);
+        const cachedProducts = sessionStorage.getItem("productList");
+        if (cachedProducts) {
+            setProducts(JSON.parse(cachedProducts));
+            setLoading(false);
+        } else {
+            reload();
+        }
     }, []);
 
-    const fetchProducts = async () => {
-        try {
-            
-            if(!sessionStorage.getItem("productList")){
-                
-                var prodList = await getData(process.env.REACT_APP_getProducts);
-
-                 prodList.body.getReader().read().then(function (result) {
-                    //console.log(JSON.parse(result.value));
-                    var decoder = new TextDecoder();
-                    var string = decoder.decode(result.value);
-                    sessionStorage.setItem("productList", string);
-                    setProducts(JSON.parse(string));
-                  });
-               
-              }else{
-              
-                var cachedProducts = sessionStorage.getItem("productList");
-                
-
-                setProducts(JSON.parse(cachedProducts));
-              }
-           
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    };
-
     const reload = async () => {
+        setLoading(true);
         try {
-            
-            if(!sessionStorage.getItem("productList")){
-                var prodList = await getData(process.env.REACT_APP_getProducts);
-                sessionStorage.setItem("productList",  JSON.stringify(prodList));
-                setProducts(prodList);
-               
-              }else{
-              
-                var cachedProducts = sessionStorage.getItem("productList");
-      
-                setProducts(JSON.parse(cachedProducts));
-              }
+            const prodList = await getData(process.env.REACT_APP_getProducts);
+            sessionStorage.setItem("productList", JSON.stringify(prodList));
+            setProducts(prodList);
         } catch (error) {
             console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
         }
     };
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <div className="flex min-h-screen">
             {/* Sidebar */}
-            <DashboardSideMenu></DashboardSideMenu>
-            
+            <DashboardSideMenu />
+
             {/* Main Content */}
             <div className="flex-1 p-6">
-            
-             <EditableTable products={products} setProducts={setProducts} reloadData={reload} />
-
+                <EditableTable products={products} setProducts={setProducts} reloadData={reload} />
             </div>
         </div>
     );
-}
+};
 
 export default Inventory;

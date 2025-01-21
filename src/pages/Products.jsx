@@ -16,7 +16,7 @@ const Products = () => {
 
  async function fetchProducts() {
     try {
-      if (sessionStorage.getItem("productList")) {
+      if (sessionStorage.getItem("productList") && sessionStorage.getItem("productList") != "[]") {
 
         var cachedProducts = sessionStorage.getItem("productList");
 
